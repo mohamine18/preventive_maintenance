@@ -1,0 +1,32 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "preventive maintenance",
+  "main": "app.js",
+  "source": "views/index.ejs",
+  "scripts": {
+    "start": "nodemon server.js",
+    "build": "parcel build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohamine18/preventive_maintenance.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohamine18/preventive_maintenance/issues"
+  },
+  "homepage": "https://github.com/mohamine18/preventive_maintenance#readme",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19",
+    "parcel": "^2.7.0"
+  }
+}
