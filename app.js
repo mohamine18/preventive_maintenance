@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const authRouter = require("./routes/authentication");
+const homeRouter = require("./routes/home");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use("/", homeRouter);
 app.use("/authentication", authRouter);
 
 module.exports = app;

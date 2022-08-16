@@ -1,0 +1,6 @@
+<div class="alert alert-<%= errors.type %>  <% if (errors.dismissible) { "alert-dismissible fade show" %>  <% } %>" role="alert">
+    <strong><%= errors.alert %> </strong> <%= errors.msg %>
+    <% if (errors.dismissible) { %> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>     
+    <% } %>
+</div>
