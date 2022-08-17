@@ -1,9 +1,10 @@
 const express = require("express");
 
 const homeController = require("../controllers/home");
+const authController = require("../controllers/authentication");
 
 const router = express.Router();
 
-router.route("/").get(homeController.homePage);
+router.route("/").get(authController.hasPermission, homeController.homePage);
 
 module.exports = router;

@@ -4,11 +4,11 @@ const router = express.Router();
 
 const authValidator = require("../validators/authentication");
 
-const authMiddleware = require("../controllers/authentication");
+const authController = require("../controllers/authentication");
 
 router
   .route("/login")
-  .get(authMiddleware.getLoginPage)
-  .post(authValidator.login, authMiddleware.login);
+  .get(authController.getLoginPage)
+  .post(authValidator.login, authController.login);
 
 module.exports = router;

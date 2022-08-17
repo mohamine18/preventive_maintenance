@@ -1,18 +1,6 @@
 const { validationResult } = require("express-validator");
 
-const errorhandler = (msg, type) => {
-  let alert;
-  let dismissible;
-  if (type === "danger") {
-    alert = "Error!";
-    dismissible = false;
-  }
-  if (type === "success") {
-    alert = "Success!";
-    dismissible = true;
-  }
-  return { alert, msg, type, dismissible };
-};
+const errorhandler = require("../util/errorHandler");
 
 exports.getLoginPage = (req, res) => {
   res.render("authentication/login", {
@@ -34,4 +22,16 @@ exports.login = (req, res) => {
     pageTitle: "Login Page",
     errors: null,
   });
+};
+
+exports.hasPermission = (req, res, next) => {
+  const role = "admin"; // Roles are fetched from the database
+  if (role === "admin") {
+    req.canView = true;
+  }
+  if (role === "user") {
+    req.canView = false;
+  } // This will change after implementing RBAC or ABAC
+  // TODO: in this step we can implement canView, canRead, canWrite ..etc
+  next();
 };
