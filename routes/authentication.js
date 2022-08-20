@@ -8,7 +8,8 @@ const authController = require("../controllers/authentication");
 
 router
   .route("/login")
-  .get(authController.getLoginPage)
+  .get(authController.redirectLoggedIn, authController.getLoginPage)
   .post(authValidator.login, authController.login);
 
+router.route("/logout").post(authController.logout);
 module.exports = router;

@@ -9,8 +9,13 @@ const authValidator = require("../validators/authentication");
 
 router
   .route("/register")
-  .get(authController.hasPermission, adminController.getRegistrationPage)
+  .get(
+    authController.isLoggedIn,
+    authController.hasPermission,
+    adminController.getRegistrationPage
+  )
   .post(
+    authController.isLoggedIn,
     authController.hasPermission,
     authValidator.register,
     adminController.register

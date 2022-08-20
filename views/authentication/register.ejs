@@ -17,12 +17,12 @@
                 <input type="email" class="form-control" name="email" id="email" placeholder="email" <% if (body !== null) { %> value="<%= body.email %>"<% } %>>
                 <label for="email">Email address</label>
             </div>
-            <select class="form-select mb-3" aria-label="role" name="role">
+            <select class="form-select mb-3" aria-label="role" name="role" id="role" <% if (body !== null) { %> data-value="<%= body.role %>"<% } %>>
                 <option selected disabled hidden>Select a role</option>
                 <option value="admin">Admin</option>
                 <option value="user">User</option>
             </select>
-            <select class="form-select mb-3" aria-label="function" name="function">
+            <select class="form-select mb-3" aria-label="function" name="function" id="function" <% if (body !== null) { %> data-value="<%= body.function %>"<% } %>>
                 <option selected disabled hidden>Select a function</option>
                 <option value="technician">Technician</option>
                 <option value="engineer">Engineer</option>
@@ -39,6 +39,6 @@
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Register</button>
         </form>
     </main>
-
+<script src="/js/main.js"></script>
 
 <%- include('../includes/footer'); -%>

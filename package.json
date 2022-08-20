@@ -20,12 +20,16 @@
   },
   "homepage": "https://github.com/mohamine18/preventive_maintenance#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
+    "connect-mongodb-session": "^3.1.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "express-validator": "^6.14.2",
     "i": "^0.3.7",
+    "mongoose": "^6.5.2",
     "npm": "^8.17.0"
   },
   "devDependencies": {
