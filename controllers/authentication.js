@@ -52,7 +52,7 @@ exports.logout = (req, res, next) => {
 };
 
 exports.hasPermission = (req, res, next) => {
-  const role = "admin"; // Roles are fetched from the database
+  const role = req.user.role; // Roles are fetched from the database
   if (role === "admin") {
     res.locals.canView = true;
   }
