@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const { validationResult } = require("express-validator");
@@ -7,10 +8,7 @@ const errorhandler = require("../util/errorHandler");
 const User = require("../models/user");
 
 exports.getRegistrationPage = (req, res) => {
-  if (res.locals.canView === false) {
-    return res.redirect("/");
-  }
-  res.render("authentication/register", {
+  res.render("admin/register", {
     pageTitle: "Register a new user",
     errors: null,
     url: "/admin/register",
@@ -19,11 +17,10 @@ exports.getRegistrationPage = (req, res) => {
 };
 
 exports.register = async (req, res) => {
-  console.log(req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log(errors);
-    return res.render("authentication/register", {
+    return res.render("admin/register", {
       pageTitle: "Register a new user",
       errors: errorhandler(errors.errors[0].msg, "danger"),
       url: "/admin/register",
@@ -33,7 +30,7 @@ exports.register = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email }).exec();
     if (user) {
-      return res.render("authentication/register", {
+      return res.render("admin/register", {
         pageTitle: "Register a new user",
         errors: errorhandler("Email address is used", "danger"),
         url: "/admin/register",
@@ -49,12 +46,64 @@ exports.register = async (req, res) => {
       password: hashedPassword,
     });
     newUser.save();
-    // res.render("admin/users", {
-    //   pageTitle: "List of users",
-    //   url: "/admin/users",
-    //   errors: errorhandler("User created with success", "success"),
-    // });
+    res.redirect("/admin/users");
   } catch (error) {
     console.log(error);
   }
+};
+
+exports.getListUsers = async (req, res) => {
+  try {
+    const users = await User.find({ active: true }).select(
+      "name email role function"
+    );
+    res.render("admin/users", {
+      pageTitle: "List of users",
+      url: "/admin/users",
+      users,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getUserForm = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.userId)) {
+    //flash message (user can't be found)
+    return res.redirect("/admin/users");
+  }
+  try {
+    const user = await User.findOne({ _id: req.params.userId });
+    if (!user) {
+      //flash message (user can't be found)
+      res.redirect("/admin/users");
+    }
+    res.render("admin/editUser", {
+      pageTitle: `User Account | ${user.name}`,
+      url: "",
+      errors: null,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.editUser = (req, res) => {
+  console.log(req.body);
+  // no email value because is disabled
+  // checkbox value is "on" when checked
+};
+
+exports.deleteUser = async (req, res) => {
+  if (!mongoose.isValidObjectId(req.params.userId)) {
+    //flash message (user can't be found)
+    return res.redirect("/admin/users");
+  }
+  try {
+    await User.findByIdAndUpdate(req.params.userId, { active: false });
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect("/admin/users");
 };

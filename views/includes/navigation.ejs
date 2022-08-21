@@ -1,4 +1,4 @@
-<nav class="navbar bg-primary fixed-top text-center">
+<nav class="navbar bg-primary fixed-top text-center p-2">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><img src="/images/techno.png" alt="logo" width="120" height="30"></a>
     <button class="navbar-toggler" style="background-color: #FFE50D;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -14,14 +14,22 @@
           <li class="nav-item">
             <a class="nav-link <% if (url === "/") { %> active <% } %>" aria-current="page" href="/">Home</a>
           </li>
+          
           <% if (canView) { %>
+            <hr>
             <li class="nav-item">
               <a class="nav-link <% if (url === "/admin/register") { %> active <% } %>" href="/admin/register">User Registration</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link <% if (url === "/admin/users") { %> active <% } %>" href="/admin/users">Users List</a>
+            </li>
+            <hr>
           <% } %>
+          
           <% if (isAuthenticated) { %>
             <li class="nav-item">
               <form action="/auth/logout" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <button type="submit" class="btn btn-link">Logout</a>
               </form>
             </li>

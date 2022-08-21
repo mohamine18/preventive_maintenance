@@ -5,12 +5,6 @@ const authController = require("../controllers/authentication");
 
 const router = express.Router();
 
-router
-  .route("/")
-  .get(
-    authController.isLoggedIn,
-    authController.hasPermission,
-    homeController.homePage
-  );
+router.route("/").get(authController.hasPermission, homeController.homePage);
 
 module.exports = router;

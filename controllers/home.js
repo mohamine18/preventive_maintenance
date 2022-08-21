@@ -4,3 +4,9 @@ exports.homePage = (req, res) => {
     url: "/",
   });
 };
+
+exports.notFound = (req, res, next) => {
+  res.render("notFound", {
+    pageTitle: "404 Page not found",
+  });
+};

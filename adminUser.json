@@ -1,0 +1,13 @@
+[
+  {
+    "_id": {
+      "$oid": "62cfcde0b88265bf885b2e57"
+    },
+    "name": "Bouras Mohammed Amine",
+    "email": "mohamine19@gmail.com",
+    "role": "admin",
+    "function": "engineer",
+    "active": true,
+    "password": "$2b$12$Cnj6S5jpcfHvV1utyzQPleSRSVIkiB0VdaHzJK0v77Pa7CMQMJodW"
+  }
+]

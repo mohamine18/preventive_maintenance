@@ -9,6 +9,7 @@ const User = require("../models/user");
 exports.getLoginPage = (req, res) => {
   res.render("authentication/login", {
     pageTitle: "Login Page",
+    csrfToken: req.csrfToken(),
     errors: null,
   });
 };
@@ -22,27 +23,35 @@ exports.login = async (req, res) => {
     });
   }
 
-  const user = await User.findOne({ email: req.body.email }).select(
-    "email role password"
-  );
-  if (!user) {
-    return res.render("authentication/login", {
-      pageTitle: "Login Page",
-      errors: errorhandler("No user found with provided email", "danger"),
+  try {
+    const user = await User.findOne({
+      email: req.body.email,
+      active: true,
+    }).select("email role password");
+    console.log("this is user", user);
+    if (!user) {
+      return res.render("authentication/login", {
+        pageTitle: "Login Page",
+        csrfToken: req.csrfToken(),
+        errors: errorhandler("No user found with provided email", "danger"),
+      });
+    }
+    result = await bcrypt.compare(req.body.password, user.password);
+    if (!result) {
+      return res.render("authentication/login", {
+        pageTitle: "Login Page",
+        errors: errorhandler("Wrong password please try again", "danger"),
+      });
+    }
+    const { _id, email, role } = user;
+    req.session.isLoggedIn = true;
+    req.session.user = { _id, email, role };
+    req.session.save((err) => {
+      res.redirect("/");
     });
+  } catch (error) {
+    console.log(error);
   }
-  result = await bcrypt.compare(req.body.password, user.password);
-  if (!result) {
-    return res.render("authentication/login", {
-      pageTitle: "Login Page",
-      errors: errorhandler("Wrong password please try again", "danger"),
-    });
-  }
-  req.session.isLoggedIn = true;
-  req.session.user = user;
-  req.session.save((err) => {
-    res.redirect("/");
-  });
 };
 
 exports.logout = (req, res, next) => {
@@ -52,7 +61,8 @@ exports.logout = (req, res, next) => {
 };
 
 exports.hasPermission = (req, res, next) => {
-  const role = req.user.role; // Roles are fetched from the database
+  const role = req.user.role;
+  // console.log(req.originalUrl);
   if (role === "admin") {
     res.locals.canView = true;
   }
@@ -70,15 +80,17 @@ exports.redirectLoggedIn = (req, res, next) => {
   next();
 };
 
-exports.isLoggedIn = (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/auth/login");
   }
-  User.findById(req.session.user)
-    .then((user) => {
-      req.user = user;
-      res.locals.isAuthenticated = req.session.isLoggedIn;
-      next();
-    })
-    .catch((err) => console.log(err));
+  try {
+    const user = await User.findById(req.session.user);
+    req.user = user;
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken();
+    next();
+  } catch (error) {
+    console.log(error);
+  }
 };
