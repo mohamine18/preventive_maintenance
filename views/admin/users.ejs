@@ -3,6 +3,12 @@
 </head>
 <body class="home">
     <%- include('../includes/navigation'); -%>
+    <% if (error.length == 1) {%>
+      <%- include('../includes/flashErrors'); -%>
+    <% } %>
+    <% if (success.length == 1) {%>
+      <%- include('../includes/flashErrors'); -%>
+    <% } %>
 <main class="container marginetop">
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
         <caption class="h3">List of users</caption>
@@ -24,7 +30,7 @@
                     <td><%= user.name %></td>
                     <td><%= user.email %></td>
                     <td><%= user.role %></td>
-                    <td><%= user.function %></td>
+                    <td><%= user.func %></td>
                     <td><a href="/admin/user/<%= user._id %>" class="btn btn-outline-warning">Edit</a></td>
                     <td>
                         <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-user-name="<%= user.name %>" data-user-id="<%= user._id %>">

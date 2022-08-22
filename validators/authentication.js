@@ -9,9 +9,7 @@ exports.register = [
     .normalizeEmail()
     .withMessage("Please enter a valid email"),
   body("role").notEmpty().withMessage("Please select a role and a function"),
-  body("function")
-    .notEmpty()
-    .withMessage("Please select a role and a function"),
+  body("func").notEmpty().withMessage("Please select a role and a function"),
   body("password")
     .isLength({ min: 8 })
     .withMessage(
@@ -23,4 +21,14 @@ exports.register = [
     }
     return true;
   }),
+];
+
+exports.editUser = [
+  body("name").notEmpty().trim().withMessage("Please enter a valid name"),
+  body("email")
+    .isEmail()
+    .normalizeEmail()
+    .withMessage("Please enter a valid email"),
+  body("role").notEmpty().withMessage("Please select a role and a function"),
+  body("func").notEmpty().withMessage("Please select a role and a function"),
 ];

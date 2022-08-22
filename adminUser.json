@@ -6,8 +6,18 @@
     "name": "Bouras Mohammed Amine",
     "email": "mohamine19@gmail.com",
     "role": "admin",
-    "function": "engineer",
+    "func": "engineer",
     "active": true,
-    "password": "$2b$12$Cnj6S5jpcfHvV1utyzQPleSRSVIkiB0VdaHzJK0v77Pa7CMQMJodW"
+    "password": "$2b$12$Cnj6S5jpcfHvV1utyzQPleSRSVIkiB0VdaHzJK0v77Pa7CMQMJodW",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1661159545210"
+      }
+    },
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1661159545210"
+      }
+    }
   }
 ]

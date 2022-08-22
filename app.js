@@ -2,8 +2,9 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const session = require("express-session");
-const mongoDBStore = require("connect-mongodb-session")(session);
+const MongoDBStore = require("connect-mongodb-session")(session);
 const csurf = require("csurf");
+const flash = require("connect-flash");
 
 // const bcrypt = require("bcrypt");
 // bcrypt.hash("xxxxxxxx", 12).then((hash) => console.log(hash));
@@ -13,11 +14,11 @@ const homeRouter = require("./routes/home");
 const adminRouter = require("./routes/admin");
 
 const { isLoggedIn } = require("./controllers/authentication");
-const { notFound } = require("./controllers/home");
+const { notFound, globalError } = require("./controllers/home");
 
 const app = express();
 
-const sessionMongoDB = new mongoDBStore({
+const sessionMongoDB = new MongoDBStore({
   uri: process.env.DATABASE_LOCAL,
   databaseName: "Pmaintenance",
   collection: "sessions",
@@ -41,15 +42,15 @@ app.use(
 );
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.static(path.join(__dirname, "public")));
-
 app.use(csrfProtection);
+app.use(flash());
 
 app.use("/auth", authRouter);
 app.use(isLoggedIn);
 app.use("/", homeRouter);
 app.use("/admin", adminRouter);
-app.use(notFound);
+app.use("*", notFound);
+app.use(globalError);
 
 module.exports = app;

@@ -3,7 +3,8 @@ const express = require("express");
 const router = express.Router();
 
 const adminController = require("../controllers/admin");
-const authController = require("../controllers/authentication");
+
+const authzController = require("../controllers/authorization");
 
 const authValidator = require("../validators/authentication");
 
@@ -16,23 +17,27 @@ router.use((req, res, next) => {
 
 router
   .route("/register")
-  .get(authController.hasPermission, adminController.getRegistrationPage)
+  .get(authzController.hasPermission, adminController.getRegistrationPage)
   .post(
-    authController.hasPermission,
+    authzController.hasPermission,
     authValidator.register,
     adminController.register
   );
 router
   .route("/users")
-  .get(authController.hasPermission, adminController.getListUsers);
+  .get(authzController.hasPermission, adminController.getListUsers);
 
 router
   .route("/user/:userId")
-  .get(authController.hasPermission, adminController.getUserForm)
-  .post(authController.hasPermission, adminController.editUser);
+  .get(authzController.hasPermission, adminController.getUserForm)
+  .post(
+    authzController.hasPermission,
+    authValidator.editUser,
+    adminController.editUser
+  );
 
 router
   .route("/user/delete/:userId")
-  .post(authController.hasPermission, adminController.deleteUser);
+  .post(authzController.hasPermission, adminController.deleteUser);
 
 module.exports = router;

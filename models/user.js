@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
@@ -19,7 +19,7 @@ const userSchema = new Schema(
       enum: ["admin", "user"],
       default: "user",
     },
-    function: {
+    func: {
       type: String,
       enum: ["technician", "engineer", "collaborator"],
     },
