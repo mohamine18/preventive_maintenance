@@ -1,15 +1,10 @@
 <%- include('../includes/head'); -%>
     <link rel="stylesheet" href="/css/users.css">
 </head>
-<body class="home">
+<body class="home container">
     <%- include('../includes/navigation'); -%>
-    <% if (error.length == 1) {%>
-      <%- include('../includes/flashErrors'); -%>
-    <% } %>
-    <% if (success.length == 1) {%>
-      <%- include('../includes/flashErrors'); -%>
-    <% } %>
-<main class="container marginetop">
+    <%- include('../includes/flashErrors'); -%>
+<main class="container">
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
         <caption class="h3">List of users</caption>
         <thead class="table-primary table-bordered border-dark">

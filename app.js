@@ -14,7 +14,7 @@ const homeRouter = require("./routes/home");
 const adminRouter = require("./routes/admin");
 
 const { isLoggedIn } = require("./controllers/authentication");
-const { notFound, globalError } = require("./controllers/home");
+const { pageNotFound, globalErrorhandler } = require("./controllers/error");
 
 const app = express();
 
@@ -50,7 +50,7 @@ app.use("/auth", authRouter);
 app.use(isLoggedIn);
 app.use("/", homeRouter);
 app.use("/admin", adminRouter);
-app.use("*", notFound);
-app.use(globalError);
+app.use("*", pageNotFound);
+app.use(globalErrorhandler);
 
 module.exports = app;

@@ -59,8 +59,8 @@ exports.getListUsers = catchAsync(async (req, res) => {
     pageTitle: "List of users",
     url: "/admin/users",
     users,
-    error: req.flash("danger").length === 0 ? false : req.flash("danger"),
-    success: req.flash("success").length === 0 ? false : req.flash("success"),
+    error: req.flash("danger")[0],
+    success: req.flash("success")[0],
   });
 });
 
@@ -85,6 +85,10 @@ exports.getUserForm = catchAsync(async (req, res) => {
 exports.editUser = catchAsync(async (req, res) => {
   const errors = validationResult(req);
   const user = await User.findOne({ _id: req.params.userId });
+  if (!user) {
+    req.flash("danger", "Account can't be found, Please try again later");
+    return res.redirect("/admin/users");
+  }
   if (!errors.isEmpty()) {
     return res.render("admin/editUser", {
       pageTitle: "Edit an account",
