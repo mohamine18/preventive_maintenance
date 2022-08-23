@@ -75,6 +75,36 @@ exports.getStoreForm = catchAsync(async (req, res) => {
   });
 });
 
+exports.editStore = catchAsync(async (req, res) => {
+  const store = await Store.findOne({ _id: req.params.storeId });
+  if (!store) {
+    req.flash("danger", "Store can't be found, Please try again later");
+    return res.redirect("/admin/stores");
+  }
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.render("admin/stores/editStore", {
+      pageTitle: "Edit a store",
+      errors: errorhandler(errors.errors[0].msg, "danger"),
+      url: "/admin/stores",
+      store,
+      province,
+    });
+  }
+  const provinceData = province.find((elem) => elem.id === req.body.province);
+  const editStore = {
+    name: req.body.name,
+    address: req.body.address,
+    province: {
+      code: provinceData.id,
+      name: provinceData.name,
+    },
+  };
+  await Store.findByIdAndUpdate(req.params.storeId, editStore);
+  req.flash("success", "Store updated successfully");
+  res.redirect("/admin/stores");
+});
+
 exports.deleteStore = catchAsync(async (req, res) => {
   if (!mongoose.isValidObjectId(req.params.storeId)) {
     req.flash("danger", "Couldn't delete the store Please try again later");

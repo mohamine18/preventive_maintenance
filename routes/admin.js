@@ -69,8 +69,8 @@ router
   .get(authzController.hasPermission, adminStoreController.getStoreForm)
   .post(
     authzController.hasPermission,
-    authValidator.userEdit,
-    adminUserController.editUser
+    storeValidator.storeRegister,
+    adminStoreController.editStore
   );
 
 router
