@@ -1,0 +1,66 @@
+<%- include('../../includes/head'); -%>
+    <link rel="stylesheet" href="/css/stores.css">
+</head>
+<body class="home container">
+    <%- include('../../includes/navigation'); -%>
+    <%- include('../../includes/flashErrors'); -%>
+<main class="container">
+    <div class="d-grid  d-md-flex justify-content-md-end my-3">
+      <a class="btn btn-primary" href="/admin/store/register">Add New Store</a>
+    </div>
+    <table class="table table-striped caption-top table-hover table-bordered border-dark">
+        <thead class="table-primary table-bordered border-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Address</th>
+            <th scope="col">Province</th>
+            <th scope="col">Action</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <% let count = 0;stores.forEach(store=>{++count; %>
+                <tr>
+                    <th scope="row"><%= count %> </th>
+                    <td><%= store.name %></td>
+                    <td><%= store.address %></td>
+                    <td><%= store.province.name %> </td>
+                    <td><a href="/admin/store/<%= store._id %>" class="btn btn-outline-warning">Edit</a></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-store-name="<%= store.name %>" data-store-id="<%= store._id %>">
+                            Delete
+                        </button>
+                        
+                    </td>
+                  </tr>
+            <% }) %>
+        </tbody>
+      </table>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Delete Store</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete <b id="modal-body-text">your</b> store?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="/admin/store/delete/id" method="POST" id="deleteForm">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/stores.js"></script>
+    
+<%- include('../../includes/footer'); -%>

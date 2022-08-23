@@ -1,0 +1,33 @@
+<%- include('../../includes/head'); -%>
+    <link rel="stylesheet" href="/css/addStore.css">
+</head>
+<body>
+    <%- include('../../includes/navigation'); -%>
+    <main class="form-signin w-100 m-auto border border-primary rounded-2">
+        <% if (errors !== null) { %>
+            <%- include('../../includes/errors'); -%>
+        <% } %>
+        <form  action="/admin/store/<%= store._id %>" method="POST">
+            <h1 class="h4 mb-3 fw-normal mt-3 text-center">Create a new store</h1>
+            <div class="form-floating mb-3">
+                <input type="name" class="form-control" name="name" id="name" placeholder="name" <% if (store !== null) { %> value="<%= store.name %>"<% } %> >
+                <label for="email">Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="address" id="address" placeholder="address" <% if (store !== null) { %> value="<%= store.address %>"<% } %>>
+                <label for="address">address</label>
+            </div>
+            <select class="form-select mb-3" aria-label="province" name="province" id="province" <% if (store !== null) { %> data-value="<%= store.province.code %>"<% } %>>
+                <option selected disabled hidden>Select a province</option>
+                <% province.forEach(element => { %>
+                    <option value="<%= element.id %>"> <%= element.id %> - <%= element.name %></option>
+                <% }) %>
+            </select>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Edit</button>
+            <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/admin/stores">Cancel</a>
+        </form>
+    </main>
+<script src="/js/editStore.js"></script>
+
+<%- include('../../includes/footer'); -%>

@@ -1,19 +1,21 @@
-<%- include('../includes/head'); -%>
+<%- include('../../includes/head'); -%>
     <link rel="stylesheet" href="/css/users.css">
 </head>
 <body class="home container">
-    <%- include('../includes/navigation'); -%>
-    <%- include('../includes/flashErrors'); -%>
+    <%- include('../../includes/navigation'); -%>
+    <%- include('../../includes/flashErrors'); -%>
 <main class="container">
+    <div class="d-grid  d-md-flex justify-content-md-end my-3">
+      <a class="btn btn-primary" href="/admin/user/register">Add New Account</a>
+    </div>
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
-        <caption class="h3">List of users</caption>
         <thead class="table-primary table-bordered border-dark">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">email</th>
-            <th scope="col">role</th>
-            <th scope="col">function</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Function</th>
             <th scope="col">Action</th>
             <th scope="col">Delete</th>
           </tr>
@@ -63,4 +65,4 @@
 
   <script src="/js/users.js"></script>
     
-<%- include('../includes/footer'); -%>
+<%- include('../../includes/footer'); -%>

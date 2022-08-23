@@ -2,7 +2,7 @@ const { body } = require("express-validator");
 
 exports.login = [body("email").isEmail().withMessage("Invalid email address")];
 
-exports.register = [
+exports.userRegister = [
   body("name").notEmpty().trim().withMessage("Please enter a valid name"),
   body("email")
     .isEmail()
@@ -23,12 +23,8 @@ exports.register = [
   }),
 ];
 
-exports.editUser = [
+exports.userEdit = [
   body("name").notEmpty().trim().withMessage("Please enter a valid name"),
-  body("email")
-    .isEmail()
-    .normalizeEmail()
-    .withMessage("Please enter a valid email"),
   body("role").notEmpty().withMessage("Please select a role and a function"),
   body("func").notEmpty().withMessage("Please select a role and a function"),
 ];

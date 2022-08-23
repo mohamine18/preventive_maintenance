@@ -10,6 +10,7 @@ exports.globalErrorhandler = (err, req, res, next) => {
       pageTitle: "404 Page not found",
     });
   }
+  console.log("error from global error handler Name =>", err.name);
   console.log("error from global error handler =>", err);
   res.render("serverError", {
     pageTitle: "500 Server Error",
