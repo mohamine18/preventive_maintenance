@@ -1,5 +1,5 @@
 <%- include('../../includes/head'); -%>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/addForm.css">
 </head>
 <body>
     <%- include('../../includes/navigation'); -%>
@@ -43,7 +43,7 @@
                 </label>
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Edit</button>
+            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Update</button>
             <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/admin/users">Cancel</a>
         </form>
     </main>

@@ -6,26 +6,32 @@
     <%- include('../../includes/flashErrors'); -%>
 <main class="container">
     <div class="d-grid  d-md-flex justify-content-md-end my-3">
-      <a class="btn btn-primary" href="/admin/store/register">Add New Store</a>
+      <a class="btn btn-primary" href="/admin/material/register/<%= storeId %>">Add New Material</a>
     </div>
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
         <thead class="table-primary table-bordered border-dark">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Name</th>
-            <th scope="col">Address</th>
-            <th scope="col">Province</th>
+            <th scope="col">Inventory Code</th>
+            <th scope="col">Acquisition Date</th>
+            <th scope="col">Store</th>
+            <th scope="col">Category</th>
+            <th scope="col">Comment</th>
             <th scope="col">Action</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody class="table-group-divider">
-            <% let count = 0;stores.forEach(store=>{++count; %>
+            <% let count = 0; materials.forEach(material=>{++count; %>
                 <tr>
-                    <th scope="row"><%= count %> </th>
-                    <td><%= store.name %></td>
-                    <td><%= store.address %></td>
-                    <td><%= store.province.name %> </td>
+                    <th scope="row"><%= count %></th>
+                    <td><%= material.name %></td>
+                    <td><%= material.inventoryCode %></td>
+                    <td><%= material.acquisitionDate.toLocaleString('fr-FR', {day: "numeric", year: "numeric", month: "2-digit",}) %></td>
+                    <td><%= material.store.storeName %></td>
+                    <td><%= material.category %></td>
+                    <td><%= material.comment %></td>
                     <td>
                       <ul class="navbar-nav">
                         <li class="nav-item dropdown">
@@ -33,15 +39,13 @@
                             Action
                           </a>
                           <ul class="dropdown-menu">
-                            <li class="list-group-item"><a class="dropdown-item" href="/admin/store/<%= store._id %>/materials">Store Materials</a></li>
-                            <li class="list-group-item"><a class="dropdown-item" href="/admin/material/register/<%= store._id %>">Add Material</a></li>
-                            <li class="list-group-item"><a class="dropdown-item" href="/admin/store/<%= store._id %>">Edit Store</a></li>
+                            <li class="list-group-item"><a class="dropdown-item" href="/admin/material/<%= material.store.storeId %>/<%= material._id %>">Edit Material</a></li>
                           </ul>
                         </li>
                       </ul>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-store-name="<%= store.name %>" data-store-id="<%= store._id %>">
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-material-name="<%= material.name %>" data-material-id="<%= material._id %>">
                             Delete
                         </button>
                         
@@ -57,15 +61,15 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="deleteModelLabel">Delete Store</h5>
+          <h5 class="modal-title" id="deleteModelLabel">Delete Material</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            Are you sure you want to delete <b id="modal-body-text">your</b> store?
+            Are you sure you want to delete <b id="modal-body-text">your</b>?
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          <form action="/admin/store/delete/id" method="POST" id="deleteForm">
+          <form action="/admin/material/delete/id" method="POST" id="deleteForm">
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <button type="submit" class="btn btn-outline-danger">Delete</button>
         </form>
@@ -74,6 +78,6 @@
     </div>
   </div>
 
-  <script src="/js/stores.js"></script>
+  <script src="/js/storeMaterials.js"></script>
     
 <%- include('../../includes/footer'); -%>

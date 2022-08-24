@@ -7,6 +7,7 @@ const errorhandler = require("../../util/errorHandler");
 const catchAsync = require("../../util/catchAsync");
 
 const Store = require("../../models/store");
+const Material = require("../../models/material");
 
 const { province } = require("../../util/provinces");
 
@@ -51,6 +52,21 @@ exports.getListStores = catchAsync(async (req, res) => {
     pageTitle: "List of stores",
     url: "/admin/stores",
     stores,
+    error: req.flash("danger")[0],
+    success: req.flash("success")[0],
+  });
+});
+
+exports.getStoreMaterialList = catchAsync(async (req, res) => {
+  const materials = await Material.find({
+    active: true,
+    "store.storeId": req.params.storeId,
+  }).exec();
+  res.render("admin/stores/storeMaterials", {
+    pageTitle: "List of materials",
+    url: "/admin/stores",
+    materials,
+    storeId: req.params.storeId,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
   });
@@ -113,6 +129,6 @@ exports.deleteStore = catchAsync(async (req, res) => {
   const store = await Store.findByIdAndUpdate(req.params.storeId, {
     active: false,
   });
-  req.flash("success", `Account ${store.name} deleted successfully`);
+  req.flash("success", `${store.name} deleted successfully`);
   res.redirect("/admin/stores");
 });

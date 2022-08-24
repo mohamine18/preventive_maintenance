@@ -4,77 +4,70 @@ const router = express.Router();
 
 const adminUserController = require("../controllers/admin/user");
 const adminStoreController = require("../controllers/admin/store");
+const adminMaterialController = require("../controllers/admin/material");
 
 const authzController = require("../controllers/authorization");
 
 const authValidator = require("../validators/authentication");
 const storeValidator = require("../validators/store");
+const materialValidator = require("../validators/material");
 
-router.use((req, res, next) => {
-  if (req.user.role !== "admin") {
-    return res.redirect("/");
-  }
-  next();
-});
+router.use(authzController.isNotAdmin);
+router.use(authzController.hasPermission);
 
 // Routes of manipulating Users or Accounts
 router
   .route("/user/register")
-  .get(
-    authzController.hasPermission,
-    adminUserController.getUserRegistrationPage
-  )
-  .post(
-    authzController.hasPermission,
-    authValidator.userRegister,
-    adminUserController.userRegister
-  );
+  .get(adminUserController.getUserRegistrationPage)
+  .post(authValidator.userRegister, adminUserController.userRegister);
 
-router
-  .route("/users")
-  .get(authzController.hasPermission, adminUserController.getListUsers);
+router.route("/users").get(adminUserController.getListUsers);
 
 router
   .route("/user/:userId")
-  .get(authzController.hasPermission, adminUserController.getUserForm)
-  .post(
-    authzController.hasPermission,
-    authValidator.userEdit,
-    adminUserController.editUser
-  );
+  .get(adminUserController.getUserForm)
+  .post(authValidator.userEdit, adminUserController.editUser);
 
-router
-  .route("/user/delete/:userId")
-  .post(authzController.hasPermission, adminUserController.deleteUser);
+router.route("/user/delete/:userId").post(adminUserController.deleteUser);
 
 // Routes of manipulating Stores
 router
   .route("/store/register")
-  .get(
-    authzController.hasPermission,
-    adminStoreController.getStoreRegistrationPage
-  )
-  .post(
-    authzController.hasPermission,
-    storeValidator.storeRegister,
-    adminStoreController.storeRegister
-  );
+  .get(adminStoreController.getStoreRegistrationPage)
+  .post(storeValidator.storeRegister, adminStoreController.storeRegister);
+
+router.route("/stores").get(adminStoreController.getListStores);
 
 router
-  .route("/stores")
-  .get(authzController.hasPermission, adminStoreController.getListStores);
+  .route("/store/:storeId/materials")
+  .get(adminStoreController.getStoreMaterialList);
 
 router
   .route("/store/:storeId")
-  .get(authzController.hasPermission, adminStoreController.getStoreForm)
+  .get(adminStoreController.getStoreForm)
+  .post(storeValidator.storeRegister, adminStoreController.editStore);
+
+router.route("/store/delete/:storeId").post(adminStoreController.deleteStore);
+
+// Routes of manipulating Materials
+router
+  .route("/material/delete/:materialId")
+  .post(adminMaterialController.deleteMaterial);
+
+router
+  .route("/material/register/:storeId")
+  .get(adminMaterialController.getMaterialRegistrationPage)
   .post(
-    authzController.hasPermission,
-    storeValidator.storeRegister,
-    adminStoreController.editStore
+    materialValidator.materialRegister,
+    adminMaterialController.materialRegister
   );
 
 router
-  .route("/store/delete/:storeId")
-  .post(authzController.hasPermission, adminStoreController.deleteStore);
+  .route("/material/:storeId/:materialId")
+  .get(adminMaterialController.getMaterialForm)
+  .post(
+    materialValidator.materialRegister,
+    adminMaterialController.editMaterial
+  );
 
 module.exports = router;

@@ -10,3 +10,10 @@ exports.hasPermission = (req, res, next) => {
   // TODO: in this step we can implement canView, canRead, canWrite ..etc
   next();
 };
+
+exports.isNotAdmin = (req, res, next) => {
+  if (req.user.role !== "admin") {
+    return res.redirect("/");
+  }
+  next();
+};
