@@ -1,0 +1,29 @@
+<%- include('../includes/head'); -%>
+    <link rel="stylesheet" href="/css/addForm.css">
+</head>
+<body>
+    <%- include('../includes/navigation'); -%>
+    <main class="form-signin w-100 m-auto border border-primary rounded-2">
+        <% if (errors !== null) { %>
+            <%- include('../includes/errors'); -%>
+        <% } %>
+        <form  action="/visit/register" method="POST">
+            <h1 class="h4 mb-3 fw-normal mt-3 text-center">Create a new visit</h1>
+            <select class="form-select mb-3" aria-label="store" name="store" id="store">
+                <option selected disabled hidden>Select a Store</option>
+                <% stores.forEach(element => { %>
+                    <option value="<%= element._id %>"><%= element.name %></option>
+                <% }) %>
+            </select>
+            <div class="form-floating mb-3">
+                <textarea class="form-control" name="comment" id="comment" placeholder="comment"></textarea>
+                <label for="inventoryCode">Comment</label>
+            </div>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Create</button>
+            <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/">Cancel</a>
+        </form>
+    </main>
+<script src="/js/main.js"></script>
+
+<%- include('../includes/footer'); -%>

@@ -13,7 +13,6 @@ const storeValidator = require("../validators/store");
 const materialValidator = require("../validators/material");
 
 router.use(authzController.isNotAdmin);
-router.use(authzController.hasPermission);
 
 // Routes of manipulating Users or Accounts
 router

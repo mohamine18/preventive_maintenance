@@ -10,10 +10,11 @@ const flash = require("connect-flash");
 // bcrypt.hash("xxxxxxxx", 12).then((hash) => console.log(hash));
 
 const authRouter = require("./routes/authentication");
-const homeRouter = require("./routes/home");
+const homeRouter = require("./routes/main");
 const adminRouter = require("./routes/admin");
 
 const { isLoggedIn } = require("./controllers/authentication");
+const { hasPermission } = require("./controllers/authorization");
 const { pageNotFound, globalErrorhandler } = require("./controllers/error");
 
 const app = express();
@@ -48,6 +49,7 @@ app.use(flash());
 
 app.use("/auth", authRouter);
 app.use(isLoggedIn);
+app.use(hasPermission);
 app.use("/", homeRouter);
 app.use("/admin", adminRouter);
 app.use("*", pageNotFound);
