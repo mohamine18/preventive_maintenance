@@ -111,15 +111,26 @@ exports.editMaterial = catchAsync(async (req, res) => {
     comment: req.body.comment ? req.body.comment : "",
   };
 
-  await Material.findByIdAndUpdate(req.params.materialId, editMaterial);
+  const newMaterial = await Material.findByIdAndUpdate(
+    req.params.materialId,
+    editMaterial,
+    { new: true }
+  );
+  store.editMaterial(newMaterial);
   req.flash("success", "Material updated successfully");
   return res.redirect(`/admin/store/${store._id}/materials`);
 });
 
 exports.deleteMaterial = catchAsync(async (req, res) => {
-  const material = await Material.findByIdAndUpdate(req.params.materialId, {
-    active: false,
-  });
+  const material = await Material.findByIdAndUpdate(
+    req.params.materialId,
+    {
+      active: false,
+    },
+    { new: true }
+  );
+  const store = await Store.findOne({ _id: material.store.storeId });
+  store.removeMaterial(material._id);
   req.flash(
     "success",
     `${material.store.storeName} => ${material.name} => deleted successfully`

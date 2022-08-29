@@ -39,8 +39,28 @@ storeSchema.methods.addMaterial = function (material) {
   });
   return this.save();
 };
+
+storeSchema.methods.editMaterial = function (material) {
+  const existingArray = this.materials;
+  const { _id, name } = material;
+  const newArray = existingArray.filter(
+    (elem) => elem.materialId.toString() !== _id.toString()
+  );
+  newArray.push({
+    materialId: _id,
+    materialName: name,
+  });
+  this.materials = newArray;
+  return this.save();
+};
+
 storeSchema.methods.removeMaterial = function (materialId) {
-  // if the status of material set to inactive delete the material from the array of materials
+  const existingArray = this.materials;
+  const newArray = existingArray.filter(
+    (elem) => elem.materialId.toString() !== materialId.toString()
+  );
+  this.materials = newArray;
+  return this.save();
 };
 
 module.exports = mongoose.model("Store", storeSchema);

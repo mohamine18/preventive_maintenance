@@ -58,6 +58,7 @@ exports.getListStores = catchAsync(async (req, res) => {
 });
 
 exports.getStoreMaterialList = catchAsync(async (req, res) => {
+  const store = await Store.findOne({ _id: req.params.storeId });
   const materials = await Material.find({
     active: true,
     "store.storeId": req.params.storeId,
@@ -66,7 +67,8 @@ exports.getStoreMaterialList = catchAsync(async (req, res) => {
     pageTitle: "List of materials",
     url: "/admin/stores",
     materials,
-    storeId: req.params.storeId,
+    storeName: store.name,
+    storeId: store._id,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
   });

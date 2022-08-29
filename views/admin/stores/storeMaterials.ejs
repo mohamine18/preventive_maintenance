@@ -5,7 +5,8 @@
     <%- include('../../includes/navigation'); -%>
     <%- include('../../includes/flashErrors'); -%>
 <main class="container">
-    <div class="d-grid  d-md-flex justify-content-md-end my-3">
+    <div class=" d-flex justify-content-between my-3">
+      <p class="h4 text-secondary"><%= storeName %> </p>
       <a class="btn btn-primary" href="/admin/material/register/<%= storeId %>">Add New Material</a>
     </div>
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
