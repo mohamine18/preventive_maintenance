@@ -1,0 +1,104 @@
+<%- include('../includes/head'); -%>
+    <link rel="stylesheet" href="/css/addForm.css">
+</head>
+<body>
+    <%- include('../includes/navigation'); -%>
+    <main class="form-signin w-100 m-auto border border-primary rounded-2 mb-2">
+        <% if (errors !== null) { %>
+            <%- include('../includes/errors'); -%>
+        <% } %>
+        <form  action="" method="POST">
+            <h1 class="h4 mb-3 fw-normal mt-3 text-center">Create a new status</h1>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="store" id="store" placeholder="store" value="<%= material.store.storeName %>" disabled>
+                <label for="email">Store</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="material" id="material" placeholder="material" value="<%= material.name %>" disabled>
+                <label for="email">Material Name</label>
+            </div>
+            
+            <label for="clean" class="m-1">Cleanliness</label>
+            <select class="form-select mb-3" aria-label="clean" name="clean" id="clean" <% if (body !== null) { %> data-value="<%= body.clean %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="clean">Clean</option>
+                <option value="average">Average</option>
+                <option value="dirty">Dirty</option>
+            </select>
+
+            <label for="physicalState" class="m-1">Physical State</label>
+            <select class="form-select mb-3" aria-label="physicalState" name="physicalState" id="physicalState" <% if (body !== null) { %> data-value="<%= body.physicalState %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+                <option value="bad">Bad</option>
+            </select>
+
+            <label for="inverter" class="m-1">Inverter Autonomy (Onduleur)</label>
+            <select class="form-select mb-3" aria-label="inverter" name="inverter" id="inverter" <% if (body !== null) { %> data-value="<%= body.inverter %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+                <option value="bad">Bad</option>
+            </select>
+
+            <label for="antivirus" class="m-1">Antivirus Status</label>
+            <select class="form-select mb-3" aria-label="antivirus" name="antivirus" id="antivirus" <% if (body !== null) { %> data-value="<%= body.antivirus %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+                <option value="outdated">Outdated</option>
+            </select>
+
+            
+            <label for="diskStatus" class="m-1">Disk Status</label>
+            <select class="form-select mb-3" aria-label="diskStatus" name="diskStatus" id="diskStatus" <% if (body !== null) { %> data-value="<%= body.physicalState %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+                <option value="bad">Bad</option>
+            </select>
+
+            <label for="osState" class="m-1">Operation System State</label>
+            <select class="form-select mb-3" aria-label="osState" name="osState" id="osState" <% if (body !== null) { %> data-value="<%= body.osState %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+                <option value="bad">Bad</option>
+            </select>
+
+            <label for="networkState" class="m-1">Network State</label>
+            <select class="form-select mb-3" aria-label="networkState" name="networkState" id="networkState" <% if (body !== null) { %> data-value="<%= body.networkState %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="average">Average</option>
+                <option value="bad">Bad</option>
+            </select>
+
+            <label for="windowsLicense" class="m-1">Windows License</label>
+            <select class="form-select mb-3" aria-label="windowsLicense" name="windowsLicense" id="windowsLicense" <% if (body !== null) { %> data-value="<%= body.windowsLicense %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+
+            <label for="officeLicense" class="m-1">Office License</label>
+            <select class="form-select mb-3" aria-label="officeLicense" name="officeLicense" id="officeLicense" <% if (body !== null) { %> data-value="<%= body.officeLicense %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+
+            <div class="form-floating mb-3">
+                <textarea class="form-control" name="comment" id="comment" placeholder="comment"></textarea>
+                <label for="comment">Comment</label>
+            </div>
+
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Create Status</button>
+            <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/visit/<%= visitId %>/status">Cancel</a>
+        </form>
+    </main>
+<script src="/js/addStatus.js"></script>
+
+<%- include('../includes/footer'); -%>

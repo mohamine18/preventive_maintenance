@@ -4,7 +4,14 @@
 <body class="home">
   <%- include('includes/navigation'); -%>
   <%- include('includes/flashErrors'); -%>
-
+  <% if (visits.length === 0) { %>
+    <div class="card  m-3 text-center border-light">
+      <div class="card-body">
+        <p class="card-text h4">Please create a new visit to start working.</p>
+        <a href="/visit/register" class="btn btn-primary mt-3">Create Visit</a>
+      </div>
+    </div>
+  <% } %>
   <% visits.forEach(visit => { %>
    
     <div class="card m-3 border-primary ">
@@ -30,10 +37,10 @@
               <path d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
               <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
             </svg>
-            <%= visit.daysAgo %>
+            <%= visit.duration %>
           </div>
         </p>
-        <a href="#" class="btn btn-primary d-flex justify-content-center align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable-circle me-2" viewBox="0 0 16 16">
+        <a href="/visit/<%= visit._id %>/status" class="btn btn-primary d-flex justify-content-center align-items-center"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable-circle me-2" viewBox="0 0 16 16">
           <path d="M12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"/>
           <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0Zm-1 0a7 7 0 1 0-13.202 3.249l1.988-1.657a4.5 4.5 0 0 1 7.537-4.623L7.497 6.5l1 2.5 1.333 3.11c-.56.251-1.18.39-1.833.39a4.49 4.49 0 0 1-1.592-.29L4.747 14.2A7 7 0 0 0 15 8Zm-8.295.139a.25.25 0 0 0-.288-.376l-1.5.5.159.474.808-.27-.595.894a.25.25 0 0 0 .287.376l.808-.27-.595.894a.25.25 0 0 0 .287.376l1.5-.5-.159-.474-.808.27.596-.894a.25.25 0 0 0-.288-.376l-.808.27.596-.894Z"/>
         </svg>

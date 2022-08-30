@@ -2,8 +2,10 @@ const express = require("express");
 
 const homeController = require("../controllers/home");
 const visitController = require("../controllers/user/visit");
+const statusController = require("../controllers/user/status");
 
 const visitValidator = require("../validators/visit");
+const statusValidator = require("../validators/status");
 
 const router = express.Router();
 
@@ -13,5 +15,12 @@ router
   .route("/visit/register")
   .get(visitController.getVisitRegistrationPage)
   .post(visitValidator.visitRegister, visitController.visitRegister);
+
+router.route("/visit/:visitId/status").get(visitController.getVisitStatusList);
+
+router
+  .route("/status/:visitId/:materialId/register")
+  .get(statusController.getStatusRegistrationPage)
+  .post(statusValidator.statusRegister, statusController.statusRegister);
 
 module.exports = router;

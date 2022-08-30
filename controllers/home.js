@@ -15,25 +15,21 @@ exports.homePage = catchAsync(async (req, res) => {
 
   const newVisits = await Promise.all(
     visits.map(async (elem) => {
-      const { user, store, createdAt } = elem;
-
-      const date = moment(createdAt).format("dddd DD-MM-YYYY");
-
-      const daysAgo = moment(Date.now()).from(moment(createdAt), true);
-
-      const shop = await Store.findOne({ _id: store.storeId });
-      const materialsNumber = shop.materials.length;
-
-      // calculate how many status we have
+      const { _id, user, store, createdAt } = elem; //destructuring a visit
+      const date = moment(createdAt).format("dddd DD-MM-YYYY"); // formatting date using moment js
+      const duration = moment(Date.now()).from(moment(createdAt), true); // calculating the date difference
+      const shop = await Store.findOne({ _id: store.storeId }); // getting a shop information
+      const materialsNumber = shop.materials.length; // calculating the length of materials array inside a store
       const statusNumber = null;
 
       return {
+        _id,
         user,
         store,
         date,
         materialsNumber,
         statusNumber,
-        daysAgo,
+        duration,
       };
     })
   );
