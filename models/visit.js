@@ -48,4 +48,9 @@ const visitSchema = new Schema(
   { timestamps: true }
 );
 
+visitSchema.methods.addStatus = function (statusId) {
+  this.status.push({ statusId });
+  return this.save();
+};
+
 module.exports = mongoose.model("Visit", visitSchema);

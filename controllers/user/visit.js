@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 const { validationResult } = require("express-validator");
 
 const errorhandler = require("../../util/errorHandler");
@@ -69,14 +71,39 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
   const { materials } = await Store.findOne({
     _id: visit.store.storeId,
   }).select("materials");
+  const checkedMaterials = [];
+  statuses.forEach((status) =>
+    checkedMaterials.push(status.material.materialId.toString())
+  );
+
+  const newMaterials = materials.filter((item) => {
+    const include = checkedMaterials.includes(item.materialId.toString());
+    if (!include) {
+      return item;
+    }
+    return;
+  });
 
   res.render("visit/status", {
     pageTitle: `${visit.store.storeName} materials Statuses`,
     url: null,
-    visitId: req.params.visitId,
+    visitId: visit._id,
     statuses,
-    materials: materials,
+    materials: newMaterials,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
   });
+});
+
+exports.closeVisit = catchAsync(async (req, res) => {
+  const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
+  const update = {
+    state: "close",
+    closingDate: moment().format(),
+    duration: moment().from(visit.createdAt, true),
+  };
+  await Visit.findByIdAndUpdate(req.params.visitId, update);
+  //closingDate state close duration
+  req.flash("success", `Visit ${visit.store.storeName} closed successfully`);
+  res.redirect("/");
 });

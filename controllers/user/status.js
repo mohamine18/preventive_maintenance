@@ -27,6 +27,9 @@ exports.statusRegister = catchAsync(async (req, res) => {
   const material = await Material.findOne({
     _id: req.params.materialId,
   }).select("_id name store");
+
+  const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.render("status/addStatus", {
@@ -38,8 +41,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
       visitId: req.params.visitId,
     });
   }
-  // if all good proceed for registration on database
-  console.log(material);
+
   const newStatus = new Status({
     cleanliness: req.body.clean,
     physicalState: req.body.physicalState,
@@ -57,7 +59,31 @@ exports.statusRegister = catchAsync(async (req, res) => {
     },
     visit: req.params.visitId,
   });
-  newStatus.save();
+
+  const status = await newStatus.save();
+  visit.addStatus(status._id);
+
   req.flash("success", "Status created successfully");
   res.redirect(`/visit/${req.params.visitId}/status`);
+});
+
+exports.getStatusForm = catchAsync(async (req, res) => {
+  const status = await Status.findOne({ _id: req.params.statusId }).exec();
+  if (!status) {
+    req.flash("danger", "Status can't be found, Please try again");
+    return res.redirect("/");
+  }
+  const visit = await Visit.findOne({ _id: status.visit }).exec();
+
+  res.render("status/editStatus", {
+    pageTitle: "Edit a status",
+    errors: null,
+    url: null,
+    status,
+    visit,
+  });
+});
+
+exports.editStatus = catchAsync(async (req, res) => {
+  console.log(req.body);
 });

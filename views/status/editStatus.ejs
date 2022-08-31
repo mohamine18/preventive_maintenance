@@ -7,19 +7,19 @@
         <% if (errors !== null) { %>
             <%- include('../includes/errors'); -%>
         <% } %>
-        <form  action="" method="POST">
-            <h1 class="h4 mb-3 fw-normal mt-3 text-center">Create a new status</h1>
+        <form  action="/status/<%= status._id %>" method="POST">
+            <h1 class="h4 mb-3 fw-normal mt-3 text-center">Edit a status</h1>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="store" id="store" placeholder="store" value="<%= material.store.storeName %>" disabled>
+                <input type="text" class="form-control" name="store" id="store" placeholder="store" value="<%= visit.store.storeName %>" disabled>
                 <label for="email">Store</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="material" id="material" placeholder="material" value="<%= material.name %>" disabled>
+                <input type="text" class="form-control" name="material" id="material" placeholder="material" value="<%= status.material.materialName %>" disabled>
                 <label for="email">Material Name</label>
             </div>
             
             <label for="clean" class="m-1">Cleanliness</label>
-            <select class="form-select mb-3" aria-label="clean" name="clean" id="clean" <% if (body !== null) { %> data-value="<%= body.clean %>"<% } %>>
+            <select class="form-select mb-3" aria-label="clean" name="clean" id="clean" <% if (status !== null) { %> data-value="<%= status.cleanliness %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="clean">Clean</option>
                 <option value="average">Average</option>
@@ -27,7 +27,7 @@
             </select>
 
             <label for="physicalState" class="m-1">Physical State</label>
-            <select class="form-select mb-3" aria-label="physicalState" name="physicalState" id="physicalState" <% if (body !== null) { %> data-value="<%= body.physicalState %>"<% } %>>
+            <select class="form-select mb-3" aria-label="physicalState" name="physicalState" id="physicalState" <% if (status !== null) { %> data-value="<%= status.physicalState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="average">Average</option>
@@ -35,7 +35,7 @@
             </select>
 
             <label for="inverter" class="m-1">Inverter Autonomy (Onduleur)</label>
-            <select class="form-select mb-3" aria-label="inverter" name="inverter" id="inverter" <% if (body !== null) { %> data-value="<%= body.inverter %>"<% } %>>
+            <select class="form-select mb-3" aria-label="inverter" name="inverter" id="inverter" <% if (status !== null) { %> data-value="<%= status.inverterAutonomy %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="average">Average</option>
@@ -43,7 +43,7 @@
             </select>
 
             <label for="antivirus" class="m-1">Antivirus Status</label>
-            <select class="form-select mb-3" aria-label="antivirus" name="antivirus" id="antivirus" <% if (body !== null) { %> data-value="<%= body.antivirus %>"<% } %>>
+            <select class="form-select mb-3" aria-label="antivirus" name="antivirus" id="antivirus" <% if (status !== null) { %> data-value="<%= status.antivirusStatus %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="on">On</option>
                 <option value="off">Off</option>
@@ -52,7 +52,7 @@
 
             
             <label for="diskStatus" class="m-1">Disk Status</label>
-            <select class="form-select mb-3" aria-label="diskStatus" name="diskStatus" id="diskStatus" <% if (body !== null) { %> data-value="<%= body.diskStatus %>"<% } %>>
+            <select class="form-select mb-3" aria-label="diskStatus" name="diskStatus" id="diskStatus" <% if (status !== null) { %> data-value="<%= status.diskStatus %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="average">Average</option>
@@ -60,7 +60,7 @@
             </select>
 
             <label for="osState" class="m-1">Operation System State</label>
-            <select class="form-select mb-3" aria-label="osState" name="osState" id="osState" <% if (body !== null) { %> data-value="<%= body.osState %>"<% } %>>
+            <select class="form-select mb-3" aria-label="osState" name="osState" id="osState" <% if (status !== null) { %> data-value="<%= status.osState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="average">Average</option>
@@ -68,7 +68,7 @@
             </select>
 
             <label for="networkState" class="m-1">Network State</label>
-            <select class="form-select mb-3" aria-label="networkState" name="networkState" id="networkState" <% if (body !== null) { %> data-value="<%= body.networkState %>"<% } %>>
+            <select class="form-select mb-3" aria-label="networkState" name="networkState" id="networkState" <% if (status !== null) { %> data-value="<%= status.networkState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="average">Average</option>
@@ -76,27 +76,27 @@
             </select>
 
             <label for="windowsLicense" class="m-1">Windows License</label>
-            <select class="form-select mb-3" aria-label="windowsLicense" name="windowsLicense" id="windowsLicense" <% if (body !== null) { %> data-value="<%= body.windowsLicense %>"<% } %>>
+            <select class="form-select mb-3" aria-label="windowsLicense" name="windowsLicense" id="windowsLicense" <% if (status !== null) { %> data-value="<%= status.windowsLicense %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
             </select>
 
             <label for="officeLicense" class="m-1">Office License</label>
-            <select class="form-select mb-3" aria-label="officeLicense" name="officeLicense" id="officeLicense" <% if (body !== null) { %> data-value="<%= body.officeLicense %>"<% } %>>
+            <select class="form-select mb-3" aria-label="officeLicense" name="officeLicense" id="officeLicense" <% if (status !== null) { %> data-value="<%= status.officeLicense %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
             </select>
 
             <div class="form-floating mb-3">
-                <textarea class="form-control" name="comment" id="comment" placeholder="comment"></textarea>
+                <textarea class="form-control" name="comment" id="comment" placeholder="comment" <% if (status !== null) { %> data-value="<%= status.comment %>"<% } %>></textarea>
                 <label for="comment">Comment</label>
             </div>
 
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Create Status</button>
-            <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/visit/<%= visitId %>/status">Cancel</a>
+            <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">Edit Status</button>
+            <a class="w-100 btn btn-lg btn-outline-secondary mt-3" href="/visit/<%= visit._id %>/status">Cancel</a>
         </form>
     </main>
 <script src="/js/addStatus.js"></script>

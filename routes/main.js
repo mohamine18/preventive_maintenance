@@ -18,6 +18,13 @@ router
 
 router.route("/visit/:visitId/status").get(visitController.getVisitStatusList);
 
+router.route("/visit/close/:visitId").post(visitController.closeVisit);
+
+router
+  .route("/status/:statusId")
+  .get(statusController.getStatusForm)
+  .post(statusValidator.statusRegister, statusController.editStatus);
+
 router
   .route("/status/:visitId/:materialId/register")
   .get(statusController.getStatusRegistrationPage)

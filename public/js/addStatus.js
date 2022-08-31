@@ -7,6 +7,7 @@ const osStateElement = document.getElementById("osState");
 const networkStateElement = document.getElementById("networkState");
 const windowsLicenseElement = document.getElementById("windowsLicense");
 const officeLicenseElement = document.getElementById("officeLicense");
+const commentElement = document.getElementById("comment");
 
 const cleanData = cleanElement.getAttribute("data-value");
 const physicalStateData = physicalStateElement.getAttribute("data-value");
@@ -17,6 +18,7 @@ const osStateData = osStateElement.getAttribute("data-value");
 const networkStateData = networkStateElement.getAttribute("data-value");
 const windowsLicenseData = windowsLicenseElement.getAttribute("data-value");
 const officeLicenseData = officeLicenseElement.getAttribute("data-value");
+const commentValue = commentElement.getAttribute("data-value");
 
 if (cleanData) {
   cleanElement.value = cleanData;
@@ -52,4 +54,8 @@ if (windowsLicenseData) {
 
 if (officeLicenseData) {
   officeLicenseElement.value = officeLicenseData;
+}
+
+if (commentValue) {
+  commentElement.value = commentValue;
 }
