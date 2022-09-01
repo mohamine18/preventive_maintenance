@@ -21,6 +21,9 @@
           <% if (canView) { %>
             <hr>
             <li class="nav-item">
+              <a class="nav-link <% if (url === "/admin/visits") { %> active <% } %>" href="/admin/visits">Visits</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link <% if (url === "/admin/users") { %> active <% } %>" href="/admin/users">Users</a>
             </li>
             <li class="nav-item">

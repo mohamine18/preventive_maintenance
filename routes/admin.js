@@ -5,6 +5,7 @@ const router = express.Router();
 const adminUserController = require("../controllers/admin/user");
 const adminStoreController = require("../controllers/admin/store");
 const adminMaterialController = require("../controllers/admin/material");
+const adminVisitController = require("../controllers/admin/visit");
 
 const authzController = require("../controllers/authorization");
 
@@ -68,5 +69,11 @@ router
     materialValidator.materialRegister,
     adminMaterialController.editMaterial
   );
+
+//Routes for manipulating visits
+
+router.route("/visits").get(adminVisitController.getListVisits);
+
+router.route("/visit/delete/:visitId").post(adminVisitController.deleteVisit);
 
 module.exports = router;

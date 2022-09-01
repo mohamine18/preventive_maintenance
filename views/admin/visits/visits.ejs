@@ -1,0 +1,120 @@
+<%- include('../../includes/head'); -%>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body class="home container">
+    <%- include('../../includes/navigation'); -%>
+    <%- include('../../includes/flashErrors'); -%>
+<main class="container">
+    <div class="d-grid  d-md-flex justify-content-md-end my-3">
+      <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModel" id="filterButton">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel me-1" viewBox="0 0 16 16">
+            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
+          </svg>
+        Filters</button>
+    </div>
+    <table class="table table-striped caption-top table-hover table-bordered border-dark">
+        <thead class="table-primary table-bordered border-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Store</th>
+            <th scope="col">User</th>
+            <th scope="col">State</th>
+            <th scope="col">Created</th>
+            <th scope="col">Closed</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Delete</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            <% let count = 0;visits.forEach(visit=>{++count; %>
+                <tr>
+                    <th scope="row"><%= count %> </th>
+                    <td><%= visit.store.storeName %></td>
+                    <td><%= visit.user.userName %></td>
+                    <td><%= visit.state %></td>
+                    <td><%= visit.createdAt %></td>
+                    <td><%= visit.closingDate %></td>
+                    <td><%= visit.duration %></td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-store-name="<%= visit.store.storeName %>" data-visit-id="<%= visit._id %>" data-user-name="<%= visit.user.userName %>">
+                            Delete
+                        </button>
+                    </td>
+                  </tr>
+            <% }) %>
+        </tbody>
+      </table>
+</main>
+
+<!-- Modal delete visit -->
+<div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="deleteModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModelLabel">Delete Visit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Are you sure you want to delete <b id="modal-body-text-store">your</b> visit created by <b id="modal-body-text-user">your</b>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="/admin/visit/delete/id" method="POST" id="deleteForm">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal filter visits -->
+<div class="modal fade" id="filterModel" tabindex="-1" aria-labelledby="filterModelLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterModelLabel">Filters</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Store</label>
+                    <select class="form-select" id="inputGroupSelect01">
+                        <option selected disabled hidden>Select a Store</option>
+                        <% stores.forEach(store => { %>
+                            <option value="<%= store._id %>"><%= store.name %></option>
+                        <% }) %>
+                    </select>
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">User</label>
+                    <select class="form-select" id="inputGroupSelect01">
+                        <option selected disabled hidden>Select a User</option>
+                        <% users.forEach(user => { %>
+                            <option value="<%= user._id %>"><%= user.name %></option>
+                        <% }) %>
+                    </select>
+              </div>
+              <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">State</label>
+                    <select class="form-select" id="inputGroupSelect01">
+                        <option selected disabled hidden>Select a State</option>
+                        <option value="open">Open</option>
+                        <option value="close">Close</option>
+                    </select>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <form action="/admin/visits/filter" method="POST" id="deleteForm">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-outline-primary">Apply Filters</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/visits.js"></script>
+    
+<%- include('../../includes/footer'); -%>

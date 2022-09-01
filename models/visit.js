@@ -18,7 +18,6 @@ const visitSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    duration: { type: String, default: null },
     user: {
       userId: {
         type: mongoose.Types.ObjectId,
