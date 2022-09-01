@@ -5,7 +5,6 @@ const catchAsync = require("../../util/catchAsync");
 
 const Material = require("../../models/material");
 const Status = require("../../models/status");
-const Store = require("../../models/store");
 const Visit = require("../../models/visit");
 
 exports.getStatusRegistrationPage = catchAsync(async (req, res) => {
@@ -85,5 +84,32 @@ exports.getStatusForm = catchAsync(async (req, res) => {
 });
 
 exports.editStatus = catchAsync(async (req, res) => {
-  console.log(req.body);
+  const status = await Status.findOne({ _id: req.params.statusId }).exec();
+  if (!status) {
+    req.flash("danger", "Status can't be found, Please try again");
+    return res.redirect("/");
+  }
+  const updatedStatus = {
+    cleanliness: req.body.clean,
+    physicalState: req.body.physicalState,
+    inverterAutonomy: req.body.inverter,
+    antivirusStatus: req.body.antivirus,
+    diskStatus: req.body.diskStatus,
+    osState: req.body.osState,
+    networkState: req.body.networkState,
+    windowsLicense: req.body.windowsLicense,
+    officeLicense: req.body.officeLicense,
+    comment: req.body.comment,
+  };
+  const newStatus = await Status.findByIdAndUpdate(
+    req.params.statusId,
+    updatedStatus,
+    { new: true }
+  );
+
+  req.flash(
+    "success",
+    `${newStatus.material.materialName} Status updated successfully`
+  );
+  res.redirect(`/visit/${newStatus.visit}/status`);
 });

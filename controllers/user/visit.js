@@ -87,7 +87,7 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
   res.render("visit/status", {
     pageTitle: `${visit.store.storeName} materials Statuses`,
     url: null,
-    visitId: visit._id,
+    visit,
     statuses,
     materials: newMaterials,
     error: req.flash("danger")[0],
@@ -103,7 +103,7 @@ exports.closeVisit = catchAsync(async (req, res) => {
     duration: moment().from(visit.createdAt, true),
   };
   await Visit.findByIdAndUpdate(req.params.visitId, update);
-  //closingDate state close duration
+
   req.flash("success", `Visit ${visit.store.storeName} closed successfully`);
   res.redirect("/");
 });

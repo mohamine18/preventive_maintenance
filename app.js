@@ -12,6 +12,8 @@ const flash = require("connect-flash");
 const authRouter = require("./routes/authentication");
 const homeRouter = require("./routes/main");
 const adminRouter = require("./routes/admin");
+const visitRouter = require("./routes/visit");
+const statusRouter = require("./routes/status");
 
 const { isLoggedIn } = require("./controllers/authentication");
 const { hasPermission } = require("./controllers/authorization");
@@ -51,6 +53,8 @@ app.use("/auth", authRouter);
 app.use(isLoggedIn);
 app.use(hasPermission);
 app.use("/", homeRouter);
+app.use("/visit", visitRouter);
+app.use("/status", statusRouter);
 app.use("/admin", adminRouter);
 app.use("*", pageNotFound);
 app.use(globalErrorhandler);
