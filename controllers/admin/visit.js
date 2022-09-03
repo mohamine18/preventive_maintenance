@@ -10,6 +10,7 @@ const Store = require("../../models/store");
 const Visit = require("../../models/visit");
 
 exports.getListVisits = catchAsync(async (req, res) => {
+  console.log(req.query);
   const visits = await Visit.find();
   const stores = await Store.find().select("_id name");
   const users = await User.find().select("_id name");
@@ -36,6 +37,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
     visits: editedVisits,
     stores,
     users,
+    queryParams: req.query,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
   });
