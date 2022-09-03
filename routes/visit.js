@@ -1,6 +1,7 @@
 const express = require("express");
 
 const visitController = require("../controllers/user/visit");
+const { checkValidObjectId } = require("../controllers/authorization");
 
 const visitValidator = require("../validators/visit");
 
@@ -11,8 +12,12 @@ router
   .get(visitController.getVisitRegistrationPage)
   .post(visitValidator.visitRegister, visitController.visitRegister);
 
-router.route("/:visitId/status").get(visitController.getVisitStatusList);
+router
+  .route("/:visitId/statues")
+  .get(checkValidObjectId, visitController.getVisitStatusList);
 
-router.route("/close/:visitId").post(visitController.closeVisit);
+router
+  .route("/close/:visitId")
+  .post(checkValidObjectId, visitController.closeVisit);
 
 module.exports = router;

@@ -1,12 +1,11 @@
-const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const { validationResult } = require("express-validator");
 
 const errorhandler = require("../../util/errorHandler");
+const catchAsync = require("../../util/catchAsync");
 
 const User = require("../../models/user");
-const catchAsync = require("../../util/catchAsync");
 
 exports.getUserRegistrationPage = (req, res) => {
   res.render("admin/users/register", {
@@ -53,9 +52,7 @@ exports.userRegister = catchAsync(async (req, res) => {
 });
 
 exports.getListUsers = catchAsync(async (req, res) => {
-  const users = await User.find({ active: true }).select(
-    "name email role func"
-  );
+  const users = await User.find().select("name email role func");
   res.render("admin/users/users", {
     pageTitle: "List of users",
     url: "/admin/users",
@@ -66,10 +63,6 @@ exports.getListUsers = catchAsync(async (req, res) => {
 });
 
 exports.getUserForm = catchAsync(async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.userId)) {
-    req.flash("danger", "Account can't be found, Please try again later");
-    return res.redirect("/admin/users");
-  }
   const user = await User.findOne({ _id: req.params.userId });
   if (!user) {
     req.flash("danger", "Account can't be found, Please try again later");
@@ -146,10 +139,6 @@ exports.editUser = catchAsync(async (req, res) => {
 });
 
 exports.deleteUser = catchAsync(async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.userId)) {
-    req.flash("danger", "Couldn't delete the account Please try again later");
-    return res.redirect("/admin/users");
-  }
   const user = await User.findByIdAndUpdate(req.params.userId, {
     active: false,
   });

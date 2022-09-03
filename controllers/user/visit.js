@@ -64,7 +64,6 @@ exports.visitRegister = catchAsync(async (req, res) => {
 exports.getVisitStatusList = catchAsync(async (req, res) => {
   const statuses = await Status.find({
     visit: req.params.visitId,
-    active: true,
   });
   //subtract materials already have a status active
   const visit = await Visit.findOne({ _id: req.params.visitId }).exec(); // check for no visit
@@ -97,6 +96,10 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
 
 exports.closeVisit = catchAsync(async (req, res) => {
   const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
+  if (!visit) {
+    req.flash("danger", "Visit Can't be found, Please try again");
+    res.redirect("/");
+  }
   const update = {
     state: "close",
     closingDate: moment().format(),

@@ -22,7 +22,6 @@
             <select class="form-select mb-3" aria-label="clean" name="clean" id="clean" <% if (body !== null) { %> data-value="<%= body.clean %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="clean">Clean</option>
-                <option value="average">Average</option>
                 <option value="dirty">Dirty</option>
             </select>
 
@@ -30,24 +29,23 @@
             <select class="form-select mb-3" aria-label="physicalState" name="physicalState" id="physicalState" <% if (body !== null) { %> data-value="<%= body.physicalState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
-                <option value="average">Average</option>
                 <option value="bad">Bad</option>
             </select>
 
-            <label for="inverter" class="m-1">Inverter Autonomy (Onduleur)</label>
+            <label for="inverter" class="m-1">Battery Autonomy (Onduleur)</label>
             <select class="form-select mb-3" aria-label="inverter" name="inverter" id="inverter" <% if (body !== null) { %> data-value="<%= body.inverter %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
-                <option value="average">Average</option>
-                <option value="bad">Bad</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
             </select>
 
             <label for="antivirus" class="m-1">Antivirus Status</label>
             <select class="form-select mb-3" aria-label="antivirus" name="antivirus" id="antivirus" <% if (body !== null) { %> data-value="<%= body.antivirus %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
-                <option value="on">On</option>
-                <option value="off">Off</option>
-                <option value="outdated">Outdated</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
             </select>
 
             
@@ -55,23 +53,23 @@
             <select class="form-select mb-3" aria-label="diskStatus" name="diskStatus" id="diskStatus" <% if (body !== null) { %> data-value="<%= body.diskStatus %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
-                <option value="average">Average</option>
-                <option value="bad">Bad</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
             </select>
 
             <label for="osState" class="m-1">Operation System State</label>
             <select class="form-select mb-3" aria-label="osState" name="osState" id="osState" <% if (body !== null) { %> data-value="<%= body.osState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
-                <option value="average">Average</option>
-                <option value="bad">Bad</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
             </select>
 
             <label for="networkState" class="m-1">Network State</label>
             <select class="form-select mb-3" aria-label="networkState" name="networkState" id="networkState" <% if (body !== null) { %> data-value="<%= body.networkState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
-                <option value="good">Good</option>
-                <option value="average">Average</option>
+                <option value="100Mb">100 Mb</option>
+                <option value="1Gb">1 Gb</option>
                 <option value="bad">Bad</option>
             </select>
 

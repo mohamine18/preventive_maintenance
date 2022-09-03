@@ -1,15 +1,11 @@
-const mongoose = require("mongoose");
-
 const { validationResult } = require("express-validator");
 
 const errorhandler = require("../../util/errorHandler");
-
 const catchAsync = require("../../util/catchAsync");
+const { province } = require("../../util/provinces");
 
 const Store = require("../../models/store");
 const Material = require("../../models/material");
-
-const { province } = require("../../util/provinces");
 
 exports.getStoreRegistrationPage = (req, res) => {
   res.render("admin/stores/addStore", {
@@ -47,7 +43,7 @@ exports.storeRegister = catchAsync(async (req, res) => {
 });
 
 exports.getListStores = catchAsync(async (req, res) => {
-  const stores = await Store.find({ active: true });
+  const stores = await Store.find();
   res.render("admin/stores/stores", {
     pageTitle: "List of stores",
     url: "/admin/stores",
@@ -60,7 +56,6 @@ exports.getListStores = catchAsync(async (req, res) => {
 exports.getStoreMaterialList = catchAsync(async (req, res) => {
   const store = await Store.findOne({ _id: req.params.storeId });
   const materials = await Material.find({
-    active: true,
     "store.storeId": req.params.storeId,
   }).exec();
   res.render("admin/stores/storeMaterials", {
@@ -75,10 +70,6 @@ exports.getStoreMaterialList = catchAsync(async (req, res) => {
 });
 
 exports.getStoreForm = catchAsync(async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.storeId)) {
-    req.flash("danger", "Store can't be found, Please try again later");
-    return res.redirect("/admin/stores");
-  }
   const store = await Store.findOne({ _id: req.params.storeId });
   if (!store) {
     req.flash("danger", "Store can't be found, Please try again later");
@@ -124,10 +115,6 @@ exports.editStore = catchAsync(async (req, res) => {
 });
 
 exports.deleteStore = catchAsync(async (req, res) => {
-  if (!mongoose.isValidObjectId(req.params.storeId)) {
-    req.flash("danger", "Couldn't delete the store Please try again later");
-    return res.redirect("/admin/stores");
-  }
   const store = await Store.findByIdAndUpdate(req.params.storeId, {
     active: false,
   });

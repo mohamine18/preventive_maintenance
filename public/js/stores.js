@@ -1,5 +1,5 @@
 const modalBody = document.querySelector("#modal-body-text");
-const deleteForm = document.querySelector("#deleteModel");
+const deleteForm = document.querySelector("#deleteForm");
 document.addEventListener("click", (e) => {
   if (e.target.id === "deleteButton") {
     e.preventDefault();

@@ -47,6 +47,11 @@ const visitSchema = new Schema(
   { timestamps: true }
 );
 
+visitSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
+
 visitSchema.methods.addStatus = function (statusId) {
   this.status.push({ statusId });
   return this.save();

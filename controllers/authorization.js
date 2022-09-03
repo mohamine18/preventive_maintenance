@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 exports.hasPermission = (req, res, next) => {
   const { role } = req.user;
   // console.log(req.originalUrl);
@@ -14,6 +16,17 @@ exports.hasPermission = (req, res, next) => {
 exports.isNotAdmin = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res.redirect("/");
+  }
+  next();
+};
+
+exports.checkValidObjectId = (req, res, next) => {
+  const params = Object.values(req.params);
+  for (const param of params) {
+    if (!mongoose.isValidObjectId(param)) {
+      req.flash("danger", "501 - Not Implemented, Please try again");
+      return res.redirect("/");
+    }
   }
   next();
 };

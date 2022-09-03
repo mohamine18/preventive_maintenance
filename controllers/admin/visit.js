@@ -3,17 +3,16 @@ const moment = require("moment");
 const { validationResult } = require("express-validator");
 
 const errorhandler = require("../../util/errorHandler");
+const catchAsync = require("../../util/catchAsync");
 
 const User = require("../../models/user");
 const Store = require("../../models/store");
 const Visit = require("../../models/visit");
 
-const catchAsync = require("../../util/catchAsync");
-
 exports.getListVisits = catchAsync(async (req, res) => {
-  const visits = await Visit.find({ active: true });
-  const stores = await Store.find({ active: true }).select("_id name");
-  const users = await User.find({ active: true }).select("_id name");
+  const visits = await Visit.find();
+  const stores = await Store.find().select("_id name");
+  const users = await User.find().select("_id name");
 
   const editedVisits = visits.map((visit) => {
     const { _id, state, closingDate, user, store, createdAt } = visit;

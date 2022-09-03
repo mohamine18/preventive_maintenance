@@ -1,7 +1,6 @@
 const { validationResult } = require("express-validator");
 
 const errorhandler = require("../../util/errorHandler");
-
 const catchAsync = require("../../util/catchAsync");
 
 const Material = require("../../models/material");

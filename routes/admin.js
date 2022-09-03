@@ -7,13 +7,16 @@ const adminStoreController = require("../controllers/admin/store");
 const adminMaterialController = require("../controllers/admin/material");
 const adminVisitController = require("../controllers/admin/visit");
 
-const authzController = require("../controllers/authorization");
+const {
+  isNotAdmin,
+  checkValidObjectId,
+} = require("../controllers/authorization");
 
 const authValidator = require("../validators/authentication");
 const storeValidator = require("../validators/store");
 const materialValidator = require("../validators/material");
 
-router.use(authzController.isNotAdmin);
+router.use(isNotAdmin);
 
 // Routes of manipulating Users or Accounts
 router
@@ -25,10 +28,16 @@ router.route("/users").get(adminUserController.getListUsers);
 
 router
   .route("/user/:userId")
-  .get(adminUserController.getUserForm)
-  .post(authValidator.userEdit, adminUserController.editUser);
+  .get(checkValidObjectId, adminUserController.getUserForm)
+  .post(
+    checkValidObjectId,
+    authValidator.userEdit,
+    adminUserController.editUser
+  );
 
-router.route("/user/delete/:userId").post(adminUserController.deleteUser);
+router
+  .route("/user/delete/:userId")
+  .post(checkValidObjectId, adminUserController.deleteUser);
 
 // Routes of manipulating Stores
 router
@@ -40,32 +49,40 @@ router.route("/stores").get(adminStoreController.getListStores);
 
 router
   .route("/store/:storeId/materials")
-  .get(adminStoreController.getStoreMaterialList);
+  .get(checkValidObjectId, adminStoreController.getStoreMaterialList);
 
 router
   .route("/store/:storeId")
-  .get(adminStoreController.getStoreForm)
-  .post(storeValidator.storeRegister, adminStoreController.editStore);
+  .get(checkValidObjectId, adminStoreController.getStoreForm)
+  .post(
+    checkValidObjectId,
+    storeValidator.storeRegister,
+    adminStoreController.editStore
+  );
 
-router.route("/store/delete/:storeId").post(adminStoreController.deleteStore);
+router
+  .route("/store/delete/:storeId")
+  .post(checkValidObjectId, adminStoreController.deleteStore);
 
 // Routes of manipulating Materials
 router
   .route("/material/delete/:materialId")
-  .post(adminMaterialController.deleteMaterial);
+  .post(checkValidObjectId, adminMaterialController.deleteMaterial);
 
 router
   .route("/material/register/:storeId")
-  .get(adminMaterialController.getMaterialRegistrationPage)
+  .get(checkValidObjectId, adminMaterialController.getMaterialRegistrationPage)
   .post(
+    checkValidObjectId,
     materialValidator.materialRegister,
     adminMaterialController.materialRegister
   );
 
 router
   .route("/material/:storeId/:materialId")
-  .get(adminMaterialController.getMaterialForm)
+  .get(checkValidObjectId, adminMaterialController.getMaterialForm)
   .post(
+    checkValidObjectId,
     materialValidator.materialRegister,
     adminMaterialController.editMaterial
   );
@@ -74,6 +91,8 @@ router
 
 router.route("/visits").get(adminVisitController.getListVisits);
 
-router.route("/visit/delete/:visitId").post(adminVisitController.deleteVisit);
+router
+  .route("/visit/delete/:visitId")
+  .post(checkValidObjectId, adminVisitController.deleteVisit);
 
 module.exports = router;

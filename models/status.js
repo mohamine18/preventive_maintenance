@@ -4,13 +4,13 @@ const { Schema } = mongoose;
 
 const statusSchema = new Schema(
   {
-    cleanliness: { type: String, enum: ["clean", "average", "dirty"] },
-    physicalState: { type: String, enum: ["good", "average", "bad"] },
-    inverterAutonomy: { type: String, enum: ["good", "average", "bad"] },
-    antivirusStatus: { type: String, enum: ["on", "off", "outdated"] },
-    diskStatus: { type: String, enum: ["good", "average", "bad"] },
-    osState: { type: String, enum: ["good", "average", "bad"] },
-    networkState: { type: String, enum: ["good", "average", "bad"] },
+    cleanliness: { type: String, enum: ["clean", "dirty"] },
+    physicalState: { type: String, enum: ["good", "bad"] },
+    inverterAutonomy: { type: String, enum: ["good", "fixed", "to fix"] },
+    antivirusStatus: { type: String, enum: ["good", "fixed", "to fix"] },
+    diskStatus: { type: String, enum: ["good", "fixed", "to fix"] },
+    osState: { type: String, enum: ["good", "fixed", "to fix"] },
+    networkState: { type: String, enum: ["100Mb", "1Gb", "bad"] },
     windowsLicense: { type: String, enum: ["active", "inactive"] },
     officeLicense: { type: String, enum: ["active", "inactive"] },
     comment: String,
@@ -34,5 +34,10 @@ const statusSchema = new Schema(
   },
   { timestamps: true }
 );
+
+statusSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
 
 module.exports = mongoose.model("Status", statusSchema);

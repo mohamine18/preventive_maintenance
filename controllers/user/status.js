@@ -11,6 +11,18 @@ exports.getStatusRegistrationPage = catchAsync(async (req, res) => {
   const material = await Material.findOne({
     _id: req.params.materialId,
   }).select("_id name store");
+  if (!material) {
+    req.flash("danger", "Material Can't be found, Please try again");
+    res.redirect("/");
+  }
+
+  const visit = await Visit.findOne({
+    _id: req.params.visitId,
+  }).select("_id");
+  if (!visit) {
+    req.flash("danger", "Visit Can't be found, Please try again");
+    res.redirect("/");
+  }
 
   res.render("status/addStatus", {
     pageTitle: "Register a new status",
@@ -18,7 +30,7 @@ exports.getStatusRegistrationPage = catchAsync(async (req, res) => {
     url: null,
     body: null,
     material,
-    visitId: req.params.visitId,
+    visitId: visit._id,
   });
 });
 
@@ -28,6 +40,15 @@ exports.statusRegister = catchAsync(async (req, res) => {
   }).select("_id name store");
 
   const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
+  if (!material) {
+    req.flash("danger", "Material Can't be found, Please try again");
+    res.redirect("/");
+  }
+
+  if (!visit) {
+    req.flash("danger", "Visit Can't be found, Please try again");
+    res.redirect("/");
+  }
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -37,7 +58,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
       url: null,
       body: req.body,
       material,
-      visitId: req.params.visitId,
+      visitId: visit._id,
     });
   }
 
@@ -63,7 +84,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
   visit.addStatus(status._id);
 
   req.flash("success", "Status created successfully");
-  res.redirect(`/visit/${req.params.visitId}/status`);
+  res.redirect(`/visit/${visit._id}/status`);
 });
 
 exports.getStatusForm = catchAsync(async (req, res) => {
@@ -72,7 +93,12 @@ exports.getStatusForm = catchAsync(async (req, res) => {
     req.flash("danger", "Status can't be found, Please try again");
     return res.redirect("/");
   }
+
   const visit = await Visit.findOne({ _id: status.visit }).exec();
+  if (!visit) {
+    req.flash("danger", "Visit Can't be found, Please try again");
+    res.redirect("/");
+  }
 
   res.render("status/editStatus", {
     pageTitle: "Edit a status",

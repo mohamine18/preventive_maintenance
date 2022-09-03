@@ -25,4 +25,9 @@ const materialSchema = new Schema(
   { timestamps: true }
 );
 
+materialSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
+
 module.exports = mongoose.model("Material", materialSchema);

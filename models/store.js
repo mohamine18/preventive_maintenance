@@ -31,6 +31,11 @@ const storeSchema = new Schema(
   { timestamps: true }
 );
 
+storeSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
+
 storeSchema.methods.addMaterial = function (material) {
   const { _id, name } = material;
   this.materials.push({

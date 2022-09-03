@@ -32,4 +32,9 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+userSchema.pre(/^find/, function (next) {
+  this.find({ active: true });
+  next();
+});
+
 module.exports = mongoose.model("User", userSchema);
