@@ -38,13 +38,12 @@ exports.statusRegister = catchAsync(async (req, res) => {
   const material = await Material.findOne({
     _id: req.params.materialId,
   }).select("_id name store");
-
-  const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
   if (!material) {
     req.flash("danger", "Material Can't be found, Please try again");
     res.redirect("/");
   }
 
+  const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
   if (!visit) {
     req.flash("danger", "Visit Can't be found, Please try again");
     res.redirect("/");
@@ -84,7 +83,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
   visit.addStatus(status._id);
 
   req.flash("success", "Status created successfully");
-  res.redirect(`/visit/${visit._id}/status`);
+  res.redirect(`/visit/${visit._id}/statues`);
 });
 
 exports.getStatusForm = catchAsync(async (req, res) => {
@@ -137,5 +136,5 @@ exports.editStatus = catchAsync(async (req, res) => {
     "success",
     `${newStatus.material.materialName} Status updated successfully`
   );
-  res.redirect(`/visit/${newStatus.visit}/status`);
+  res.redirect(`/visit/${newStatus.visit}/statues`);
 });

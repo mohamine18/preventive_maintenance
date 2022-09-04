@@ -14,6 +14,7 @@ const visitSchema = new Schema(
       type: Date,
       default: null,
     },
+    duration: String,
     active: {
       type: Boolean,
       default: true,
@@ -49,6 +50,11 @@ const visitSchema = new Schema(
 
 visitSchema.pre(/^find/, function (next) {
   this.find({ active: true });
+  next();
+});
+
+visitSchema.pre("countDocuments", function (next) {
+  this.countDocuments({ active: true });
   next();
 });
 

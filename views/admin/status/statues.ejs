@@ -39,35 +39,28 @@
             <th scope="col">Created</th>
             <th scope="col">Closed</th>
             <th scope="col">Duration</th>
-            <th scope="col">Action</th>
             <th scope="col">Delete</th>
           </tr>
         </thead>
         <tbody class="table-group-divider">
-          <%- include('../../includes/records'); -%>
-            <% let count = 0;data.forEach(visit=>{++count; %>
+          <% if (date.length === 0) { %>
+           <p class="text-danger"><strong>We couldn't find any records</strong></p>
+          <% } %>
+          <% if (date.length !== 0) { %>
+            <p class="text-primary"><strong><%= queryCount %> records found</strong></p>
+           <% } %>
+          
+            <% let count = 0;date.forEach(status=>{++count; %>
                 <tr>
                     <th scope="row"><%= count %> </th>
-                    <td><%= visit.store.storeName %></td>
-                    <td><%= visit.user.userName %></td>
-                    <td><%= visit.state %></td>
-                    <td><%= visit.createdAt %></td>
-                    <td><%= visit.closingDate %></td>
-                    <td><%= visit.duration %></td>
+                    <td><%= status.store.storeName %></td>
+                    <td><%= status.user.userName %></td>
+                    <td><%= status.state %></td>
+                    <td><%= status.createdAt %></td>
+                    <td><%= status.closingDate %></td>
+                    <td><%= status.duration %></td>
                     <td>
-                      <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                          <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Action
-                          </a>
-                          <ul class="dropdown-menu">
-                            <li class="list-group-item"><a class="dropdown-item" href="/admin/visit/<%= visit._id %>/statues">Statues</a></li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-store-name="<%= visit.store.storeName %>" data-visit-id="<%= visit._id %>" data-user-name="<%= visit.user.userName %>">
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModel" id="deleteButton" data-store-name="<%= status.store.storeName %>" data-status-id="<%= status._id %>" data-user-name="<%= status.user.userName %>">
                             Delete
                         </button>
                     </td>
@@ -76,28 +69,6 @@
         </tbody>
       </table>
 </main>
-
-<!-- Modal delete visit -->
-<div class="modal fade" id="deleteModel" tabindex="-1" aria-labelledby="deleteModelLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModelLabel">Delete Visit</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            Are you sure you want to delete <b id="modal-body-text-store">your</b> visit created by <b id="modal-body-text-user">your</b>?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
-          <form action="/admin/visit/delete/id" method="POST" id="deleteForm">
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-            <button type="submit" class="btn btn-outline-danger">Delete</button>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
 
 <!-- Modal filter visits -->
 <div class="modal fade" id="filterModel" tabindex="-1" aria-labelledby="filterModelLabel" aria-hidden="true">
@@ -157,6 +128,6 @@
     </div>
   </div>
 
-  <script src="/js/visits.js"></script>
+  <script src="/js/statues.js"></script>
     
 <%- include('../../includes/footer'); -%>

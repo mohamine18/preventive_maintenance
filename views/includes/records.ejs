@@ -1,0 +1,6 @@
+<% if (data.length === 0) { %>
+    <p class="text-danger"><strong>We couldn't find any records</strong></p>
+<% } %>
+<% if (data.length !== 0) { %>
+    <p class="text-primary"><strong><%= dataCount %> records found</strong></p>
+<% } %>

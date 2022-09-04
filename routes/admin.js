@@ -98,4 +98,8 @@ router
   .route("/visit/delete/:visitId")
   .post(checkValidObjectId, adminVisitController.deleteVisit);
 
+router
+  .route("/visit/:visitId/statues")
+  .get(checkValidObjectId, adminVisitController.getListStatues);
+
 module.exports = router;

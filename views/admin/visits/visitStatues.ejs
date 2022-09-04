@@ -1,0 +1,49 @@
+<%- include('../../includes/head'); -%>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body class="home container">
+    <%- include('../../includes/navigation'); -%>
+<main class="container">
+    <table class="table table-striped caption-top table-hover table-bordered border-dark">
+        <thead class="table-primary table-bordered border-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Clean</th>
+            <th scope="col">Physical State</th>
+            <th scope="col">Battery Autonomy</th>
+            <th scope="col">Antivirus Status</th>
+            <th scope="col">Disk Status</th>
+            <th scope="col">OS State</th>
+            <th scope="col">Network State</th>
+            <th scope="col">Windows License</th>
+            <th scope="col">Office License</th>
+            <th scope="col">Comment</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <%- include('../../includes/records'); -%>
+            <% let count = 0;data.forEach(status=>{++count; %>
+                <tr>
+                    <th scope="row"><%= count %> </th>
+                    <td><%= status.material.materialName %></td>
+                    <td><%= status.cleanliness %></td>
+                    <td><%= status.physicalState %></td>
+                    <td><%= status.inverterAutonomy %></td>
+                    <td><%= status.antivirusStatus %></td>
+                    <td><%= status.diskStatus %></td>
+                    <td><%= status.osState %></td>
+                    <td><%= status.networkState %></td>
+                    <td><%= status.windowsLicense %></td>
+                    <td><%= status.officeLicense %></td>
+                    <td><%= status.comment %></td>
+                  </tr>
+            <% }) %>
+        </tbody>
+      </table>
+</main>
+
+
+  <script src="/js/statues.js"></script>
+    
+<%- include('../../includes/footer'); -%>

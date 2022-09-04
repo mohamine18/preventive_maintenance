@@ -40,4 +40,9 @@ statusSchema.pre(/^find/, function (next) {
   next();
 });
 
+statusSchema.pre("countDocuments", function (next) {
+  this.countDocuments({ active: true });
+  next();
+});
+
 module.exports = mongoose.model("Status", statusSchema);
