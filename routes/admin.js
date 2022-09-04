@@ -89,7 +89,10 @@ router
 
 //Routes for manipulating visits
 
-router.route("/visits").get(adminVisitController.getListVisits);
+router
+  .route("/visits")
+  .get(adminVisitController.getListVisits)
+  .post(adminVisitController.getListVisits);
 
 router
   .route("/visit/delete/:visitId")

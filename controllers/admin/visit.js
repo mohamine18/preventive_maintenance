@@ -10,8 +10,56 @@ const Store = require("../../models/store");
 const Visit = require("../../models/visit");
 
 exports.getListVisits = catchAsync(async (req, res) => {
-  console.log(req.query);
-  const visits = await Visit.find();
+  const queryObj = { ...req.body };
+  // delete empty date entries
+  Object.keys(queryObj).forEach((key) => {
+    if (queryObj[key] === "") {
+      delete queryObj[key];
+    }
+  });
+  //create date entries from the queryObj
+  const dateObj = { createdAt: {}, closingDate: {} };
+  Object.entries(queryObj).map((item) => {
+    if (item[0] === "createdFrom") {
+      Object.assign(dateObj.createdAt, { $gte: new Date(item[1]) });
+    }
+    if (item[0] === "createdTo") {
+      Object.assign(dateObj.createdAt, { $lt: new Date(item[1]) });
+    }
+    if (item[0] === "closedFrom") {
+      Object.assign(dateObj.closingDate, { $gte: new Date(item[1]) });
+    }
+    if (item[0] === "closedTo") {
+      Object.assign(dateObj.closingDate, { $lt: new Date(item[1]) });
+    }
+    return;
+  });
+
+  // delete keys of queryObj included in the words array
+  const dateWords = [
+    "createdFrom",
+    "createdTo",
+    "closedFrom",
+    "closedTo",
+    "_csrf",
+  ];
+  Object.keys(queryObj).forEach((key) => {
+    if (dateWords.includes(key)) {
+      delete queryObj[key];
+    }
+  });
+
+  // delete date entries if empty
+  Object.entries(dateObj).map((item) => {
+    if (Object.keys(item[1]).length === 0) {
+      delete dateObj[item[0]];
+    }
+    return;
+  });
+
+  const filterObj = { ...queryObj, ...dateObj };
+
+  const visits = await Visit.find(filterObj);
   const stores = await Store.find().select("_id name");
   const users = await User.find().select("_id name");
 
