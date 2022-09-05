@@ -1,8 +1,5 @@
 const moment = require("moment");
 
-const { validationResult } = require("express-validator");
-
-const errorhandler = require("../../util/errorHandler");
 const catchAsync = require("../../util/catchAsync");
 
 const User = require("../../models/user");
@@ -60,7 +57,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
 
   const filterObj = { ...queryObj, ...dateObj };
 
-  const visits = await Visit.find(filterObj);
+  const visits = await Visit.find(filterObj).sort("-createdAt");
   const queryCount = await Visit.find(filterObj).countDocuments();
   const stores = await Store.find().select("_id name");
   const users = await User.find().select("_id name");

@@ -6,13 +6,41 @@ const statusSchema = new Schema(
   {
     cleanliness: { type: String, enum: ["clean", "dirty"] },
     physicalState: { type: String, enum: ["good", "bad"] },
-    inverterAutonomy: { type: String, enum: ["good", "fixed", "to fix"] },
-    antivirusStatus: { type: String, enum: ["good", "fixed", "to fix"] },
-    diskStatus: { type: String, enum: ["good", "fixed", "to fix"] },
-    osState: { type: String, enum: ["good", "fixed", "to fix"] },
-    networkState: { type: String, enum: ["100Mb", "1Gb", "bad"] },
-    windowsLicense: { type: String, enum: ["active", "inactive"] },
-    officeLicense: { type: String, enum: ["active", "inactive"] },
+    inverterAutonomy: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    antivirusStatus: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    diskStatus: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    osState: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    networkState: {
+      type: String,
+      enum: ["100Mb", "1Gb", "ignored"],
+      default: "ignored",
+    },
+    windowsLicense: {
+      type: String,
+      enum: ["active", "inactive", "ignored"],
+      default: "ignored",
+    },
+    officeLicense: {
+      type: String,
+      enum: ["active", "inactive", "ignored"],
+      default: "ignored",
+    },
     comment: String,
     active: {
       type: Boolean,

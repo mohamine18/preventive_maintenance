@@ -14,6 +14,7 @@ const homeRouter = require("./routes/main");
 const adminRouter = require("./routes/admin");
 const visitRouter = require("./routes/visit");
 const statusRouter = require("./routes/status");
+const apiRouter = require("./routes/api");
 
 const { isLoggedIn } = require("./controllers/authentication");
 const { hasPermission } = require("./controllers/authorization");
@@ -49,6 +50,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(csrfProtection);
 app.use(flash());
 
+app.use("/api/v1", apiRouter);
 app.use("/auth", authRouter);
 app.use(isLoggedIn);
 app.use(hasPermission);

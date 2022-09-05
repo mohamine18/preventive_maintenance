@@ -20,6 +20,7 @@
       { "argsIgnorePattern": "req|res|next|val|err" }
     ],
     "no-restricted-syntax": ["error", "ForInStatement"],
-    "no-unneeded-ternary": "off"
+    "no-unneeded-ternary": "off",
+    "no-undef": "off"
   }
 }

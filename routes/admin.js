@@ -6,6 +6,7 @@ const adminUserController = require("../controllers/admin/user");
 const adminStoreController = require("../controllers/admin/store");
 const adminMaterialController = require("../controllers/admin/material");
 const adminVisitController = require("../controllers/admin/visit");
+const adminStatusController = require("../controllers/admin/status");
 
 const {
   isNotAdmin,
@@ -88,7 +89,6 @@ router
   );
 
 //Routes for manipulating visits
-
 router
   .route("/visits")
   .get(adminVisitController.getListVisits)
@@ -101,5 +101,10 @@ router
 router
   .route("/visit/:visitId/statues")
   .get(checkValidObjectId, adminVisitController.getListStatues);
+
+router
+  .route("/statuses")
+  .get(adminStatusController.getListStatuses)
+  .post(adminStatusController.getListStatuses);
 
 module.exports = router;
