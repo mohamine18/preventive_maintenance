@@ -1,26 +1,62 @@
 <%- include('../../includes/head'); -%>
     <link rel="stylesheet" href="/css/home.css">
 </head>
-<body class="home container">
+<body class="home">
     <%- include('../../includes/navigation'); -%>
     <%- include('../../includes/flashErrors'); -%>
-<main class="container">
+<main class="m-3">
     <div class="d-grid  d-flex justify-content-between  my-3">
       <div>
-        <% if (queryParams["store.storeId"]) { %>
-          <span class="badge bg-secondary">Store</span>
+        <% if (queryParams["material.materialId"]) { %>
+          <span class="badge bg-secondary">Material</span>
         <% } %>
-        <% if (queryParams["user.userId"]) { %>
-          <span class="badge bg-secondary">User</span>
+        <% if (queryParams["cleanliness"]) { %>
+          <span class="badge bg-secondary">cleanliness</span>
         <% } %>
-        <% if (queryParams["state"]) { %>
-          <span class="badge bg-secondary">State</span>
+        <% if (queryParams["physicalState"]) { %>
+          <span class="badge bg-secondary">Physical State</span>
         <% } %>
-        <% if (queryParams["createdFrom"] || queryParams["createdTo"]) { %>
-          <span class="badge bg-secondary">Created Date</span>
+        <% if (queryParams["inverterAutonomy"]) { %>
+          <span class="badge bg-secondary">Battery Autonomy</span>
         <% } %>
-        <% if (queryParams["closedFrom"] || queryParams["closedTo"]) { %>
-          <span class="badge bg-secondary">Closed Date</span>
+        <% if (queryParams["antivirusStatus"]) { %>
+          <span class="badge bg-secondary">Antivirus Status</span>
+        <% } %>
+        <% if (queryParams["antivirusUpdate"]) { %>
+          <span class="badge bg-secondary">Antivirus Update</span>
+        <% } %>
+        <% if (queryParams["antivirusLicense"]) { %>
+          <span class="badge bg-secondary">Antivirus License</span>
+        <% } %>
+        <% if (queryParams["diskStatus"]) { %>
+          <span class="badge bg-secondary">Disk Status</span>
+        <% } %>
+        <% if (queryParams["chkdsk"]) { %>
+          <span class="badge bg-secondary">CHKDSK</span>
+        <% } %>
+        <% if (queryParams["fragmentation"]) { %>
+          <span class="badge bg-secondary">Fragmentation</span>
+        <% } %>
+        <% if (queryParams["sfc"]) { %>
+          <span class="badge bg-secondary">SFC / Scan now</span>
+        <% } %>
+        <% if (queryParams["networkState"]) { %>
+          <span class="badge bg-secondary">Network State</span>
+        <% } %>
+        <% if (queryParams["windowsLicense"]) { %>
+          <span class="badge bg-secondary">Windows License</span>
+        <% } %>
+        <% if (queryParams["officeLicense"]) { %>
+          <span class="badge bg-secondary">Office License</span>
+        <% } %>
+        <% if (queryParams["WindowsRestorePoint"]) { %>
+          <span class="badge bg-secondary">Windows Restore Point</span>
+        <% } %>
+        <% if (queryParams["ProductionSoftware"]) { %>
+          <span class="badge bg-secondary">Production Software</span>
+        <% } %>
+        <% if (queryParams["ShareAndBackup"]) { %>
+          <span class="badge bg-secondary">Share And Backup</span>
         <% } %>
       </div>
       <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModel" id="filterButton">
@@ -39,11 +75,18 @@
           <th scope="col">Physical State</th>
           <th scope="col">Battery Autonomy</th>
           <th scope="col">Antivirus Status</th>
+          <th scope="col">Antivirus Update</th>
+          <th scope="col">Antivirus License</th>
           <th scope="col">Disk Status</th>
-          <th scope="col">OS State</th>
+          <th scope="col">CHKDSK</th>
+          <th scope="col">Fragmentation</th>
+          <th scope="col">SFC / Scan now</th>
           <th scope="col">Network State</th>
           <th scope="col">Windows License</th>
           <th scope="col">Office License</th>
+          <th scope="col">Windows Restore Point</th>
+          <th scope="col">Production Software</th>
+          <th scope="col">Share And Backup</th>
           <th scope="col">Comment</th>
           <th scope="col">Date</th>
         </tr>
@@ -59,11 +102,18 @@
                   <td><%= status.physicalState %></td>
                   <td><%= status.inverterAutonomy %></td>
                   <td><%= status.antivirusStatus %></td>
+                  <td><%= status.antivirusUpdate %></td>
+                  <td><%= status.antivirusLicense %></td>
                   <td><%= status.diskStatus %></td>
-                  <td><%= status.osState %></td>
+                  <td><%= status.chkdsk %></td>
+                  <td><%= status.fragmentation %></td>
+                  <td><%= status.sfc %></td>
                   <td><%= status.networkState %></td>
                   <td><%= status.windowsLicense %></td>
                   <td><%= status.officeLicense %></td>
+                  <td><%= status.WindowsRestorePoint %></td>
+                  <td><%= status.ProductionSoftware %></td>
+                  <td><%= status.ShareAndBackup %></td>
                   <td><%= status.comment %></td>
                   <td><%= status.date %></td>
                 </tr>
@@ -138,6 +188,25 @@
                     </select>
                 </div>
                 <div class="input-group mb-3">
+                  <label class="input-group-text" for="antivirusUpdate">antivirus Update</label>
+                    <select class="form-select" id="antivirusUpdate" name="antivirusUpdate">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="antivirusLicense">Antivirus License</label>
+                    <select class="form-select" id="antivirusLicense" name="antivirusLicense">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="active">active</option>
+                      <option value="inactive">inactive</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
                   <label class="input-group-text" for="diskStatus">Disk Status</label>
                     <select class="form-select" id="diskStatus" name="diskStatus">
                       <option selected disabled hidden>Select a value</option>
@@ -148,8 +217,28 @@
                     </select>
                 </div>
                 <div class="input-group mb-3">
-                  <label class="input-group-text" for="osState">OS State</label>
-                    <select class="form-select" id="osState" name="osState">
+                  <label class="input-group-text" for="chkdsk">CHKDSK</label>
+                    <select class="form-select" id="chkdsk" name="chkdsk">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="fragmentation">Fragmentation</label>
+                    <select class="form-select" id="fragmentation" name="fragmentation">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="sfc">SFC / Scan now</label>
+                    <select class="form-select" id="sfc" name="sfc">
                       <option selected disabled hidden>Select a value</option>
                       <option value="good">good</option>
                       <option value="fixed">fixed</option>
@@ -181,6 +270,36 @@
                       <option selected disabled hidden>Select a value</option>
                       <option value="active">active</option>
                       <option value="inactive">inactive</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="WindowsRestorePoint">Windows Restore Point</label>
+                    <select class="form-select" id="WindowsRestorePoint" name="WindowsRestorePoint">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="ProductionSoftware">Production Software</label>
+                    <select class="form-select" id="ProductionSoftware" name="ProductionSoftware">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
+                      <option value="ignored">ignored</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                  <label class="input-group-text" for="ShareAndBackup">Share And Backup</label>
+                    <select class="form-select" id="ShareAndBackup" name="ShareAndBackup">
+                      <option selected disabled hidden>Select a value</option>
+                      <option value="good">good</option>
+                      <option value="fixed">fixed</option>
+                      <option value="to fix">to fix</option>
                       <option value="ignored">ignored</option>
                     </select>
                 </div>

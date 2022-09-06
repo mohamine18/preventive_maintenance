@@ -1,9 +1,9 @@
 <%- include('../../includes/head'); -%>
     <link rel="stylesheet" href="/css/home.css">
 </head>
-<body class="home container">
+<body class="home ">
     <%- include('../../includes/navigation'); -%>
-<main class="container">
+<main class="m-3">
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
         <thead class="table-primary table-bordered border-dark">
           <tr>
@@ -13,11 +13,18 @@
             <th scope="col">Physical State</th>
             <th scope="col">Battery Autonomy</th>
             <th scope="col">Antivirus Status</th>
+            <th scope="col">Antivirus Update</th>
+            <th scope="col">Antivirus License</th>
             <th scope="col">Disk Status</th>
-            <th scope="col">OS State</th>
+            <th scope="col">CHKDSK</th>
+            <th scope="col">Fragmentation</th>
+            <th scope="col">SFC / Scan Now</th>
             <th scope="col">Network State</th>
             <th scope="col">Windows License</th>
             <th scope="col">Office License</th>
+            <th scope="col">Windows Restore Point</th>
+            <th scope="col">Production Software</th>
+            <th scope="col">Share And Backup</th>
             <th scope="col">Comment</th>
           </tr>
         </thead>
@@ -31,11 +38,18 @@
                     <td><%= status.physicalState %></td>
                     <td><%= status.inverterAutonomy %></td>
                     <td><%= status.antivirusStatus %></td>
+                    <td><%= status.antivirusUpdate %></td>
+                    <td><%= status.antivirusLicense %></td>
                     <td><%= status.diskStatus %></td>
-                    <td><%= status.osState %></td>
+                    <td><%= status.chkdsk %></td>
+                    <td><%= status.fragmentation %></td>
+                    <td><%= status.sfc %></td>
                     <td><%= status.networkState %></td>
                     <td><%= status.windowsLicense %></td>
                     <td><%= status.officeLicense %></td>
+                    <td><%= status.WindowsRestorePoint %></td>
+                    <td><%= status.ProductionSoftware %></td>
+                    <td><%= status.ShareAndBackup %></td>
                     <td><%= status.comment %></td>
                   </tr>
             <% }) %>

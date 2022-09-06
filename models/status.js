@@ -16,19 +16,39 @@ const statusSchema = new Schema(
       enum: ["good", "fixed", "to fix", "ignored"],
       default: "ignored",
     },
+    antivirusUpdate: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    antivirusLicense: {
+      type: String,
+      enum: ["active", "inactive", "ignored"],
+      default: "ignored",
+    },
     diskStatus: {
       type: String,
       enum: ["good", "fixed", "to fix", "ignored"],
       default: "ignored",
     },
-    osState: {
+    chkdsk: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    fragmentation: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    sfc: {
       type: String,
       enum: ["good", "fixed", "to fix", "ignored"],
       default: "ignored",
     },
     networkState: {
       type: String,
-      enum: ["100Mb", "1Gb", "ignored"],
+      enum: ["100Mb", "1Gb", "Bad", "ignored"],
       default: "ignored",
     },
     windowsLicense: {
@@ -39,6 +59,21 @@ const statusSchema = new Schema(
     officeLicense: {
       type: String,
       enum: ["active", "inactive", "ignored"],
+      default: "ignored",
+    },
+    WindowsRestorePoint: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    ProductionSoftware: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
+      default: "ignored",
+    },
+    ShareAndBackup: {
+      type: String,
+      enum: ["good", "fixed", "to fix", "ignored"],
       default: "ignored",
     },
     comment: String,

@@ -48,6 +48,20 @@
                 <option value="to fix">To fix</option>
             </select>
 
+            <label for="antivirusUpdate" class="m-1">Antivirus Update</label>
+            <select class="form-select mb-3" aria-label="antivirusUpdate" name="antivirusUpdate" id="antivirusUpdate" <% if (status !== null) { %> data-value="<%= status.antivirusUpdate %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
+            </select>
+
+            <label for="antivirusLicense" class="m-1">Antivirus License</label>
+            <select class="form-select mb-3" aria-label="antivirusLicense" name="antivirusLicense" id="antivirusLicense" <% if (status !== null) { %> data-value="<%= status.antivirusLicense %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
             
             <label for="diskStatus" class="m-1">Disk Status</label>
             <select class="form-select mb-3" aria-label="diskStatus" name="diskStatus" id="diskStatus" <% if (status !== null) { %> data-value="<%= status.diskStatus %>"<% } %>>
@@ -57,8 +71,24 @@
                 <option value="to fix">To fix</option>
             </select>
 
-            <label for="osState" class="m-1">Operation System State</label>
-            <select class="form-select mb-3" aria-label="osState" name="osState" id="osState" <% if (status !== null) { %> data-value="<%= status.osState %>"<% } %>>
+            <label for="chkdsk" class="m-1">CHKDSK</label>
+            <select class="form-select mb-3" aria-label="chkdsk" name="chkdsk" id="chkdsk" <% if (status !== null) { %> data-value="<%= status.chkdsk %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
+            </select>
+
+            <label for="fragmentation" class="m-1">Fragmentation</label>
+            <select class="form-select mb-3" aria-label="fragmentation" name="fragmentation" id="fragmentation" <% if (status !== null) { %> data-value="<%= status.fragmentation %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
+            </select>
+
+            <label for="sfc" class="m-1">SFC / Scan Now</label>
+            <select class="form-select mb-3" aria-label="sfc" name="sfc" id="sfc" <% if (status !== null) { %> data-value="<%= status.sfc %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
                 <option value="good">Good</option>
                 <option value="fixed">Fixed</option>
@@ -68,8 +98,9 @@
             <label for="networkState" class="m-1">Network State</label>
             <select class="form-select mb-3" aria-label="networkState" name="networkState" id="networkState" <% if (status !== null) { %> data-value="<%= status.networkState %>"<% } %>>
                 <option selected disabled hidden>Select a value</option>
-                <option value="100Mb">100 Mb</option>
                 <option value="1Gb">1 Gb</option>
+                <option value="100Mb">100 Mb</option>
+                <option value="bad">Bad</option>
             </select>
 
             <label for="windowsLicense" class="m-1">Windows License</label>
@@ -84,6 +115,30 @@
                 <option selected disabled hidden>Select a value</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
+            </select>
+
+            <label for="WindowsRestorePoint" class="m-1">Windows Restore Point</label>
+            <select class="form-select mb-3" aria-label="WindowsRestorePoint" name="WindowsRestorePoint" id="WindowsRestorePoint" <% if (status !== null) { %> data-value="<%= status.WindowsRestorePoint %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
+            </select>
+
+            <label for="ProductionSoftware" class="m-1">Production Software</label>
+            <select class="form-select mb-3" aria-label="ProductionSoftware" name="ProductionSoftware" id="ProductionSoftware" <% if (status !== null) { %> data-value="<%= status.ProductionSoftware %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
+            </select>
+
+            <label for="ShareAndBackup" class="m-1">Share And Backup</label>
+            <select class="form-select mb-3" aria-label="ShareAndBackup" name="ShareAndBackup" id="ShareAndBackup" <% if (status !== null) { %> data-value="<%= status.ShareAndBackup %>"<% } %>>
+                <option selected disabled hidden>Select a value</option>
+                <option value="good">Good</option>
+                <option value="fixed">Fixed</option>
+                <option value="to fix">To fix</option>
             </select>
 
             <div class="form-floating mb-3">

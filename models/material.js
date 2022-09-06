@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const materialSchema = new Schema(
   {
-    category: { type: String, enum: ["PC & Laptop", "Others"] },
+    category: String,
     name: String,
     inventoryCode: String,
     acquisitionDate: Date,

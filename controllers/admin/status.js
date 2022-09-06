@@ -21,7 +21,6 @@ exports.getListStatuses = catchAsync(async (req, res) => {
     statuses.map(async (state) => {
       const visit = await Visit.findOne({ _id: state.visit });
       const date = moment(visit.createdAt).format("YYYY-MM-DD");
-      console.log(state);
       return {
         ...state._doc,
         storeName: visit.store.storeName,
@@ -35,7 +34,7 @@ exports.getListStatuses = catchAsync(async (req, res) => {
     url: "/admin/statuses",
     data: editedStatuses,
     dataCount: queryCount,
-    queryParams: req.body,
+    queryParams: queryObj,
     stores,
     materialUrl: `${req.protocol}://${req.get("host")}/api/v1/materials`,
     error: req.flash("danger")[0],
