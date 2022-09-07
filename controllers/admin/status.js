@@ -55,6 +55,6 @@ exports.getListStatuses = catchAsync(async (req, res) => {
     materialUrl: `${req.protocol}://${req.get("host")}/api/v1/materials`,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
-    paginate: pagination(page, queryCount),
+    paginate: pagination(page, queryCount, req.originalUrl),
   });
 });
