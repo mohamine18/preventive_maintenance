@@ -7,57 +7,7 @@
 <main class="m-3">
     <div class="d-grid  d-flex justify-content-between  my-3">
       <div>
-        <% if (queryParams["material.materialId"]) { %>
-          <span class="badge bg-secondary">Material</span>
-        <% } %>
-        <% if (queryParams["cleanliness"]) { %>
-          <span class="badge bg-secondary">cleanliness</span>
-        <% } %>
-        <% if (queryParams["physicalState"]) { %>
-          <span class="badge bg-secondary">Physical State</span>
-        <% } %>
-        <% if (queryParams["inverterAutonomy"]) { %>
-          <span class="badge bg-secondary">Battery Autonomy</span>
-        <% } %>
-        <% if (queryParams["antivirusStatus"]) { %>
-          <span class="badge bg-secondary">Antivirus Status</span>
-        <% } %>
-        <% if (queryParams["antivirusUpdate"]) { %>
-          <span class="badge bg-secondary">Antivirus Update</span>
-        <% } %>
-        <% if (queryParams["antivirusLicense"]) { %>
-          <span class="badge bg-secondary">Antivirus License</span>
-        <% } %>
-        <% if (queryParams["diskStatus"]) { %>
-          <span class="badge bg-secondary">Disk Status</span>
-        <% } %>
-        <% if (queryParams["chkdsk"]) { %>
-          <span class="badge bg-secondary">CHKDSK</span>
-        <% } %>
-        <% if (queryParams["fragmentation"]) { %>
-          <span class="badge bg-secondary">Fragmentation</span>
-        <% } %>
-        <% if (queryParams["sfc"]) { %>
-          <span class="badge bg-secondary">SFC / Scan now</span>
-        <% } %>
-        <% if (queryParams["networkState"]) { %>
-          <span class="badge bg-secondary">Network State</span>
-        <% } %>
-        <% if (queryParams["windowsLicense"]) { %>
-          <span class="badge bg-secondary">Windows License</span>
-        <% } %>
-        <% if (queryParams["officeLicense"]) { %>
-          <span class="badge bg-secondary">Office License</span>
-        <% } %>
-        <% if (queryParams["WindowsRestorePoint"]) { %>
-          <span class="badge bg-secondary">Windows Restore Point</span>
-        <% } %>
-        <% if (queryParams["ProductionSoftware"]) { %>
-          <span class="badge bg-secondary">Production Software</span>
-        <% } %>
-        <% if (queryParams["ShareAndBackup"]) { %>
-          <span class="badge bg-secondary">Share And Backup</span>
-        <% } %>
+        <%- include('../../includes/filterBadge'); -%>
       </div>
       <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModel" id="filterButton">
         <svg width="16" height="16" fill="currentColor" class="bi bi-funnel me-1" viewBox="0 0 16 16">
@@ -65,61 +15,63 @@
           </svg>
         Filters</button>
     </div>
-    <table class="table table-striped caption-top table-hover table-bordered border-dark">
-      <thead class="table-primary table-bordered border-dark">
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Store</th>
-          <th scope="col">Name</th>
-          <th scope="col">Clean</th>
-          <th scope="col">Physical State</th>
-          <th scope="col">Battery Autonomy</th>
-          <th scope="col">Antivirus Status</th>
-          <th scope="col">Antivirus Update</th>
-          <th scope="col">Antivirus License</th>
-          <th scope="col">Disk Status</th>
-          <th scope="col">CHKDSK</th>
-          <th scope="col">Fragmentation</th>
-          <th scope="col">SFC / Scan now</th>
-          <th scope="col">Network State</th>
-          <th scope="col">Windows License</th>
-          <th scope="col">Office License</th>
-          <th scope="col">Windows Restore Point</th>
-          <th scope="col">Production Software</th>
-          <th scope="col">Share And Backup</th>
-          <th scope="col">Comment</th>
-          <th scope="col">Date</th>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <%- include('../../includes/records'); -%>
-          <% let count = 0;data.forEach(status=>{++count; %>
-              <tr>
-                  <th scope="row"><%= count %> </th>
-                  <td><%= status.storeName %></td>
-                  <td><%= status.material.materialName %></td>
-                  <td><%= status.cleanliness %></td>
-                  <td><%= status.physicalState %></td>
-                  <td><%= status.inverterAutonomy %></td>
-                  <td><%= status.antivirusStatus %></td>
-                  <td><%= status.antivirusUpdate %></td>
-                  <td><%= status.antivirusLicense %></td>
-                  <td><%= status.diskStatus %></td>
-                  <td><%= status.chkdsk %></td>
-                  <td><%= status.fragmentation %></td>
-                  <td><%= status.sfc %></td>
-                  <td><%= status.networkState %></td>
-                  <td><%= status.windowsLicense %></td>
-                  <td><%= status.officeLicense %></td>
-                  <td><%= status.WindowsRestorePoint %></td>
-                  <td><%= status.ProductionSoftware %></td>
-                  <td><%= status.ShareAndBackup %></td>
-                  <td><%= status.comment %></td>
-                  <td><%= status.date %></td>
-                </tr>
-          <% }) %>
-      </tbody>
-      </table>
+    <div class="container overFlow">
+      <table class="table table-striped caption-top table-hover table-bordered border-dark">
+        <thead class="table-primary table-bordered border-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Store</th>
+            <th scope="col">Name</th>
+            <th scope="col">Clean</th>
+            <th scope="col">Physical State</th>
+            <th scope="col">Battery Autonomy</th>
+            <th scope="col">Antivirus Status</th>
+            <th scope="col">Antivirus Update</th>
+            <th scope="col">Antivirus License</th>
+            <th scope="col">Disk Status</th>
+            <th scope="col">CHKDSK</th>
+            <th scope="col">Fragmentation</th>
+            <th scope="col">SFC / Scan now</th>
+            <th scope="col">Network State</th>
+            <th scope="col">Windows License</th>
+            <th scope="col">Office License</th>
+            <th scope="col">Windows Restore Point</th>
+            <th scope="col">Production Software</th>
+            <th scope="col">Share And Backup</th>
+            <th scope="col">Comment</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider">
+          <%- include('../../includes/records'); -%>
+            <% let count = 0;data.forEach(status=>{++count; %>
+                <tr>
+                    <th scope="row"><%= count %> </th>
+                    <td><%= status.storeName %></td>
+                    <td><%= status.material.materialName %></td>
+                    <td><%= status.cleanliness %></td>
+                    <td><%= status.physicalState %></td>
+                    <td><%= status.inverterAutonomy %></td>
+                    <td><%= status.antivirusStatus %></td>
+                    <td><%= status.antivirusUpdate %></td>
+                    <td><%= status.antivirusLicense %></td>
+                    <td><%= status.diskStatus %></td>
+                    <td><%= status.chkdsk %></td>
+                    <td><%= status.fragmentation %></td>
+                    <td><%= status.sfc %></td>
+                    <td><%= status.networkState %></td>
+                    <td><%= status.windowsLicense %></td>
+                    <td><%= status.officeLicense %></td>
+                    <td><%= status.WindowsRestorePoint %></td>
+                    <td><%= status.ProductionSoftware %></td>
+                    <td><%= status.ShareAndBackup %></td>
+                    <td><%= status.comment %></td>
+                    <td><%= status.date %></td>
+                  </tr>
+            <% }) %>
+        </tbody>
+        </table>
+    </div>
 </main>
 
 <script>

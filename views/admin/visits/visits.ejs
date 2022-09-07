@@ -7,21 +7,7 @@
 <main class="container">
     <div class="d-grid  d-flex justify-content-between  my-3">
       <div>
-        <% if (queryParams["store.storeId"]) { %>
-          <span class="badge bg-secondary">Store</span>
-        <% } %>
-        <% if (queryParams["user.userId"]) { %>
-          <span class="badge bg-secondary">User</span>
-        <% } %>
-        <% if (queryParams["state"]) { %>
-          <span class="badge bg-secondary">State</span>
-        <% } %>
-        <% if (queryParams["createdFrom"] || queryParams["createdTo"]) { %>
-          <span class="badge bg-secondary">Created Date</span>
-        <% } %>
-        <% if (queryParams["closedFrom"] || queryParams["closedTo"]) { %>
-          <span class="badge bg-secondary">Closed Date</span>
-        <% } %>
+        <%- include('../../includes/filterBadge'); -%>
       </div>
       <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#filterModel" id="filterButton">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel me-1" viewBox="0 0 16 16">
@@ -30,7 +16,7 @@
         Filters</button>
     </div>
     <table class="table table-striped caption-top table-hover table-bordered border-dark">
-        <thead class="table-primary table-bordered border-dark">
+        <thead class="table-primary table-bordersed border-dark">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Store</th>
@@ -139,11 +125,6 @@
                   <label class="form-label" for="from">Created: Start - End </label>
                   <input type="date" class="form-control mb-1" name="createdFrom" id="createdFrom">
                   <input type="date" class="form-control mb-1" name="createdTo" id="createdTo">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label" for="from">Closed: Start - End </label>
-                  <input type="date" class="form-control mb-1" name="closedFrom" id="closedFrom">
-                  <input type="date" class="form-control mb-1" name="closedTo" id="closedTo">
                 </div>
           </div>
           <div class="modal-footer">

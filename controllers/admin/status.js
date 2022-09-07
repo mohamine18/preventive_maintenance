@@ -1,5 +1,6 @@
 const moment = require("moment");
 const catchAsync = require("../../util/catchAsync");
+const { getBadge } = require("../../util/filterBadges");
 
 const Store = require("../../models/store");
 const Visit = require("../../models/visit");
@@ -34,7 +35,7 @@ exports.getListStatuses = catchAsync(async (req, res) => {
     url: "/admin/statuses",
     data: editedStatuses,
     dataCount: queryCount,
-    queryParams: queryObj,
+    queryParams: getBadge(queryObj, "statuses"),
     stores,
     materialUrl: `${req.protocol}://${req.get("host")}/api/v1/materials`,
     error: req.flash("danger")[0],

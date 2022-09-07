@@ -1,6 +1,7 @@
 const moment = require("moment");
 
 const catchAsync = require("../../util/catchAsync");
+const { getBadge } = require("../../util/filterBadges");
 
 const User = require("../../models/user");
 const Store = require("../../models/store");
@@ -23,12 +24,6 @@ exports.getListVisits = catchAsync(async (req, res) => {
     }
     if (item[0] === "createdTo") {
       Object.assign(dateObj.createdAt, { $lt: new Date(item[1]) });
-    }
-    if (item[0] === "closedFrom") {
-      Object.assign(dateObj.closingDate, { $gte: new Date(item[1]) });
-    }
-    if (item[0] === "closedTo") {
-      Object.assign(dateObj.closingDate, { $lt: new Date(item[1]) });
     }
     return;
   });
@@ -56,7 +51,6 @@ exports.getListVisits = catchAsync(async (req, res) => {
   });
 
   const filterObj = { ...queryObj, ...dateObj };
-
   const visits = await Visit.find(filterObj).sort("-createdAt");
   const queryCount = await Visit.find(filterObj).countDocuments();
   const stores = await Store.find().select("_id name");
@@ -85,7 +79,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
     stores,
     users,
     dataCount: queryCount,
-    queryParams: req.body,
+    queryParams: getBadge(filterObj, "visit"),
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
   });
