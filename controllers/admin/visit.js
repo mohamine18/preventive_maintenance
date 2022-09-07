@@ -2,6 +2,7 @@ const moment = require("moment");
 
 const catchAsync = require("../../util/catchAsync");
 const { getBadge } = require("../../util/filterBadges");
+const { pagination } = require("../../util/pagination");
 
 const User = require("../../models/user");
 const Store = require("../../models/store");
@@ -9,7 +10,7 @@ const Visit = require("../../models/visit");
 const Status = require("../../models/status");
 
 exports.getListVisits = catchAsync(async (req, res) => {
-  const queryObj = { ...req.body };
+  const queryObj = !req.query ? { ...req.body } : { ...req.query };
   // delete empty date entries
   Object.keys(queryObj).forEach((key) => {
     if (queryObj[key] === "") {
@@ -17,7 +18,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
     }
   });
   //create date entries from the queryObj
-  const dateObj = { createdAt: {}, closingDate: {} };
+  const dateObj = { createdAt: {} };
   Object.entries(queryObj).map((item) => {
     if (item[0] === "createdFrom") {
       Object.assign(dateObj.createdAt, { $gte: new Date(item[1]) });
@@ -29,13 +30,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
   });
 
   // delete keys of queryObj included in the words array
-  const dateWords = [
-    "createdFrom",
-    "createdTo",
-    "closedFrom",
-    "closedTo",
-    "_csrf",
-  ];
+  const dateWords = ["createdFrom", "createdTo", "_csrf"];
   Object.keys(queryObj).forEach((key) => {
     if (dateWords.includes(key)) {
       delete queryObj[key];
@@ -51,7 +46,20 @@ exports.getListVisits = catchAsync(async (req, res) => {
   });
 
   const filterObj = { ...queryObj, ...dateObj };
-  const visits = await Visit.find(filterObj).sort("-createdAt");
+
+  // Pagination
+  const page = +req.query.page || 1;
+  if (typeof page !== "number" || page < 0) {
+    req.flash("danger", "Page can't be found, Please try again later");
+    return res.redirect("/admin/visits");
+  }
+  const pages = page - 1;
+
+  //Queries
+  const visits = await Visit.find(filterObj)
+    .skip(pages * process.env.LINES_PER_PAGE)
+    .limit(process.env.LINES_PER_PAGE)
+    .sort("-createdAt");
   const queryCount = await Visit.find(filterObj).countDocuments();
   const stores = await Store.find().select("_id name");
   const users = await User.find().select("_id name");
@@ -82,6 +90,7 @@ exports.getListVisits = catchAsync(async (req, res) => {
     queryParams: getBadge(filterObj, "visit"),
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
+    paginate: pagination(page, queryCount, req.originalUrl),
   });
 });
 
