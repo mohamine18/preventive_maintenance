@@ -6,6 +6,7 @@ const visitParams = {
 };
 
 const statusesParams = {
+  store: "Store",
   "material.materialId": "Material",
   cleanliness: "Cleanliness",
   physicalState: "Physical State",

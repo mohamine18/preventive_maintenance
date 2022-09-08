@@ -8,7 +8,7 @@ const Visit = require("../../models/visit");
 const Status = require("../../models/status");
 
 exports.getListStatuses = catchAsync(async (req, res) => {
-  const excludeFilter = ["store", "_csrf"];
+  const excludeFilter = ["_csrf"];
   // const queryObj = { ...req.body };
   const queryObj = !req.query ? { ...req.body } : { ...req.query };
   Object.keys(queryObj).forEach((key) => {

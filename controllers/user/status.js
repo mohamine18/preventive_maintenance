@@ -84,6 +84,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
       materialName: material.name,
     },
     visit: req.params.visitId,
+    store: material.store.storeId,
   });
 
   const status = await newStatus.save();

@@ -16,6 +16,12 @@ document.addEventListener("change", async (e) => {
     const materials = await getMaterials(url);
     const selectMaterials = document.getElementById("material");
     selectMaterials.innerHTML = "";
+    const optionDisabled = document.createElement("option");
+    optionDisabled.text = "Select a material";
+    optionDisabled.hidden = true;
+    optionDisabled.disabled = true;
+    optionDisabled.selected = true;
+    selectMaterials.add(optionDisabled);
     materials.forEach((material) => {
       const option = document.createElement("option");
       option.text = material.name;

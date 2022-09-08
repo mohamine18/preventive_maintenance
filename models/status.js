@@ -94,6 +94,11 @@ const statusSchema = new Schema(
       ref: "Visit",
       required: true,
     },
+    store: {
+      type: mongoose.Types.ObjectId,
+      ref: "Store",
+      required: true,
+    },
   },
   { timestamps: true }
 );
