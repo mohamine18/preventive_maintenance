@@ -23,6 +23,14 @@ const userSchema = new Schema(
       type: String,
       enum: ["technician", "engineer", "collaborator"],
     },
+    store: {
+      storeId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Store",
+        required: true,
+      },
+      storeName: String,
+    },
     password: String,
     active: {
       type: Boolean,

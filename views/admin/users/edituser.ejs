@@ -28,6 +28,12 @@
                 <option value="engineer">Engineer</option>
                 <option value="collaborator">Collaborator</option>
             </select>
+            <select class="form-select mb-3" aria-label="store" name="store" id="store" <% if (user !== null) { %> data-value="<%= user.store.storeId %>"<% } %>>
+                <option selected disabled hidden>Select a store</option>
+                <% stores.forEach(store => { %>
+                    <option value="<%= store._id %>"><%= store.name %></option>
+                <% }) %>
+            </select>
             <div class="form-floating mb-3">
                 <input type="password" class="form-control" name="password" placeholder="Password" id="password" disabled>
                 <label for="floatingPassword">Password</label>

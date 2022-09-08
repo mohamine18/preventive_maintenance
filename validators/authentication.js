@@ -10,6 +10,7 @@ exports.userRegister = [
     .withMessage("Please enter a valid email"),
   body("role").notEmpty().withMessage("Please select a role and a function"),
   body("func").notEmpty().withMessage("Please select a role and a function"),
+  body("store").notEmpty().withMessage("Please select a store"),
   body("password")
     .isLength({ min: 8 })
     .withMessage(
@@ -27,4 +28,5 @@ exports.userEdit = [
   body("name").notEmpty().trim().withMessage("Please enter a valid name"),
   body("role").notEmpty().withMessage("Please select a role and a function"),
   body("func").notEmpty().withMessage("Please select a role and a function"),
+  body("store").notEmpty().withMessage("Please select a store"),
 ];

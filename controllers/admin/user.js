@@ -6,17 +6,21 @@ const errorhandler = require("../../util/errorHandler");
 const catchAsync = require("../../util/catchAsync");
 
 const User = require("../../models/user");
+const Store = require("../../models/store");
 
-exports.getUserRegistrationPage = (req, res) => {
+exports.getUserRegistrationPage = catchAsync(async (req, res) => {
+  const stores = await Store.find().select("_id name");
   res.render("admin/users/register", {
     pageTitle: "Register a new user",
     errors: null,
     url: "/admin/users",
     body: null,
+    stores,
   });
-};
+});
 
 exports.userRegister = catchAsync(async (req, res) => {
+  const stores = await Store.find().select("_id name");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.render("admin/users/register", {
@@ -24,6 +28,7 @@ exports.userRegister = catchAsync(async (req, res) => {
       errors: errorhandler(errors.errors[0].msg, "danger"),
       url: "/admin/users",
       body: req.body,
+      stores,
     });
   }
   const user = await User.findOne({ email: req.body.email }).exec();
@@ -33,17 +38,20 @@ exports.userRegister = catchAsync(async (req, res) => {
       errors: errorhandler("Email address already used", "warning"),
       url: "/admin/users",
       body: req.body,
+      stores,
     });
   }
   const hashedPassword = await bcrypt.hash(
     req.body.password,
     +process.env.SALT_ROUND
   );
+  const store = await Store.findOne({ _id: req.body.store }).select("_id name");
   const newUser = new User({
     name: req.body.name,
     email: req.body.email,
     role: req.body.role,
     func: req.body.func,
+    store: { storeId: store._id, storeName: store.name },
     password: hashedPassword,
   });
   newUser.save();
@@ -52,7 +60,7 @@ exports.userRegister = catchAsync(async (req, res) => {
 });
 
 exports.getListUsers = catchAsync(async (req, res) => {
-  const users = await User.find().select("name email role func");
+  const users = await User.find().select("name email role func store");
   res.render("admin/users/users", {
     pageTitle: "List of users",
     url: "/admin/users",
@@ -64,6 +72,7 @@ exports.getListUsers = catchAsync(async (req, res) => {
 
 exports.getUserForm = catchAsync(async (req, res) => {
   const user = await User.findOne({ _id: req.params.userId });
+  const stores = await Store.find().select("_id name");
   if (!user) {
     req.flash("danger", "Account can't be found, Please try again later");
     res.redirect("/admin/users");
@@ -73,12 +82,17 @@ exports.getUserForm = catchAsync(async (req, res) => {
     url: "/admin/users",
     errors: null,
     user,
+    stores,
   });
 });
 
 exports.editUser = catchAsync(async (req, res) => {
   const errors = validationResult(req);
   const user = await User.findOne({ _id: req.params.userId });
+  const stores = await Store.find().select("_id name");
+  const store = await Store.findOne({ _id: req.body.store })
+    .select("_id name")
+    .exec();
   if (!user) {
     req.flash("danger", "Account can't be found, Please try again later");
     return res.redirect("/admin/users");
@@ -89,6 +103,7 @@ exports.editUser = catchAsync(async (req, res) => {
       errors: errorhandler(errors.errors[0].msg, "danger"),
       url: "/admin/users",
       user,
+      stores,
     });
   }
   if (req.body.changePassword === "on") {
@@ -101,6 +116,7 @@ exports.editUser = catchAsync(async (req, res) => {
         ),
         url: "/admin/users",
         user,
+        stores,
       });
     }
     if (req.body.password !== req.body.confirmPassword) {
@@ -112,6 +128,7 @@ exports.editUser = catchAsync(async (req, res) => {
         ),
         url: "/admin/users",
         user,
+        stores,
       });
     }
     const hashedPassword = await bcrypt.hash(
@@ -122,6 +139,7 @@ exports.editUser = catchAsync(async (req, res) => {
       name: req.body.name,
       role: req.body.role,
       func: req.body.func,
+      store: { storeId: store._id, storeName: store.name },
       password: hashedPassword,
     };
     await User.findByIdAndUpdate(req.params.userId, editUser);
@@ -132,6 +150,7 @@ exports.editUser = catchAsync(async (req, res) => {
     name: req.body.name,
     role: req.body.role,
     func: req.body.func,
+    store: { storeId: store._id, storeName: store.name },
   };
   await User.findByIdAndUpdate(req.params.userId, editUser);
   req.flash("success", "Account updated successfully");
