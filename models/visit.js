@@ -42,6 +42,11 @@ const visitSchema = new Schema(
           ref: "Status",
           required: true,
         },
+        materialId: {
+          type: mongoose.Types.ObjectId,
+          ref: "Material",
+          required: true,
+        },
       },
     ],
   },
@@ -58,8 +63,8 @@ visitSchema.pre("countDocuments", function (next) {
   next();
 });
 
-visitSchema.methods.addStatus = function (statusId) {
-  this.status.push({ statusId });
+visitSchema.methods.addStatus = function (statusId, materialId) {
+  this.status.push({ statusId, materialId });
   return this.save();
 };
 

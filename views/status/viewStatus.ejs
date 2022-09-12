@@ -1,0 +1,37 @@
+<%- include('../includes/head'); -%>
+<link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+    <%- include('../includes/navigation'); -%>
+    
+    <main class=" m-3">
+        <h1 class="h3 mb-3 fw-normal mt-3 text-center">Last status: <%= status.material.materialName %> </h1>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Date:</b> <%= status.createdAt.toLocaleDateString("fr-FR", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></li>
+            <!-- <li class="list-group-item"><b>Material Name:</b> <%= status.material.materialName %></li> -->
+            <li class="list-group-item"><b>Cleanliness:</b> <%= status.cleanliness %></li>
+            <li class="list-group-item"><b>Physical State:</b> <%= status.physicalState %></li>
+            <li class="list-group-item"><b>Battery Autonomy (Onduleur):</b> <%= status.inverterAutonomy %></li>
+            <li class="list-group-item"><b>Antivirus Status:</b> <%= status.antivirusStatus %></li>
+            <li class="list-group-item"><b>Antivirus Update:</b> <%= status.antivirusUpdate %></li>
+            <li class="list-group-item"><b>Antivirus License:</b> <%= status.antivirusLicense %></li>
+            <li class="list-group-item"><b>Disk Status:</b> <%= status.diskStatus %></li>
+            <li class="list-group-item"><b>CHKDSK:</b> <%= status.chkdsk %></li>
+            <li class="list-group-item"><b>Fragmentation:</b> <%= status.fragmentation %></li>
+            <li class="list-group-item"><b>SFC / Scan Now:</b> <%= status.sfc %></li>
+            <li class="list-group-item"><b>Network State:</b> <%= status.networkState %></li>
+            <li class="list-group-item"><b>Windows License:</b> <%= status.windowsLicense %></li>
+            <li class="list-group-item"><b>Office License:</b> <%= status.officeLicense %></li>
+            <li class="list-group-item"><b>Windows Restore Point:</b> <%= status.WindowsRestorePoint %></li>
+            <li class="list-group-item"><b>Production Software:</b> <%= status.ProductionSoftware %></li>
+            <li class="list-group-item"><b>Share And Backup:</b> <%= status.ShareAndBackup %></li>
+        </ul>
+        <div class="d-flex  justify-content-center mt-3">
+            <button onclick="history.back()" class="btn btn-primary d-flex justify-content-center align-items-center m-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle me-2" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+              </svg>
+            Go Back</button> 
+        </div>
+    </main>
+
+<%- include('../includes/footer'); -%>

@@ -16,6 +16,8 @@ router
     statusController.editStatus
   );
 
+router.route("/lastStatus/:statusId").get(statusController.getLastStatus);
+
 router
   .route("/:visitId/:materialId/register")
   .get(checkValidObjectId, statusController.getStatusRegistrationPage)

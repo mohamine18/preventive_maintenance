@@ -21,6 +21,10 @@ const materialSchema = new Schema(
       },
       storeName: String,
     },
+    lastStatus: {
+      type: mongoose.Types.ObjectId,
+      ref: "Status",
+    },
   },
   { timestamps: true }
 );
@@ -29,5 +33,10 @@ materialSchema.pre(/^find/, function (next) {
   this.find({ active: true });
   next();
 });
+
+materialSchema.methods.addLastStatus = function (statusId) {
+  this.lastStatus = statusId;
+  this.save();
+};
 
 module.exports = mongoose.model("Material", materialSchema);

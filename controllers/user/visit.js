@@ -8,6 +8,7 @@ const catchAsync = require("../../util/catchAsync");
 const Status = require("../../models/status");
 const Store = require("../../models/store");
 const Visit = require("../../models/visit");
+const Material = require("../../models/material");
 
 exports.getVisitRegistrationPage = catchAsync(async (req, res) => {
   const stores = await Store.find().select("_id name");
@@ -83,11 +84,21 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
     return;
   });
 
+  const newStatuses = await Promise.all(
+    statuses.map(async (status) => {
+      const { lastStatus } = await Material.findOne({
+        _id: status.material.materialId,
+      }).select("lastStatus");
+      const lastState = lastStatus ? lastStatus : "undefined";
+      return { ...status._doc, lastState };
+    })
+  );
+
   res.render("visit/status", {
     pageTitle: `${visit.store.storeName} materials Statuses`,
     url: null,
     visit,
-    statuses,
+    statuses: newStatuses,
     materials: newMaterials,
     error: req.flash("danger")[0],
     success: req.flash("success")[0],
@@ -96,6 +107,7 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
 
 exports.closeVisit = catchAsync(async (req, res) => {
   const visit = await Visit.findOne({ _id: req.params.visitId }).exec();
+
   if (!visit) {
     req.flash("danger", "Visit Can't be found, Please try again");
     res.redirect("/");
@@ -106,6 +118,13 @@ exports.closeVisit = catchAsync(async (req, res) => {
     duration: moment().from(visit.createdAt, true),
   };
   await Visit.findByIdAndUpdate(req.params.visitId, update);
+
+  visit.status.forEach(async (status) => {
+    const material = await Material.findOne({
+      _id: status.materialId,
+    }).exec();
+    material.addLastStatus(status.statusId);
+  });
 
   req.flash("success", `Visit ${visit.store.storeName} closed successfully`);
   res.redirect("/");

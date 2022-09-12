@@ -88,7 +88,7 @@ exports.statusRegister = catchAsync(async (req, res) => {
   });
 
   const status = await newStatus.save();
-  visit.addStatus(status._id);
+  visit.addStatus(status._id, material._id);
 
   req.flash("success", "Status created successfully");
   res.redirect(`/visit/${visit._id}/statues`);
@@ -152,4 +152,17 @@ exports.editStatus = catchAsync(async (req, res) => {
     `${newStatus.material.materialName} Status updated successfully`
   );
   res.redirect(`/visit/${newStatus.visit}/statues`);
+});
+
+exports.getLastStatus = catchAsync(async (req, res) => {
+  const status = await Status.findOne({ _id: req.params.statusId }).exec();
+  if (!status) {
+    req.flash("danger", "Status can't be found, Please try again");
+    return res.redirect("/");
+  }
+  res.render("status/viewStatus", {
+    pageTitle: `${status.material.materialName} Last status`,
+    url: null,
+    status,
+  });
 });
