@@ -58,10 +58,16 @@ exports.getStoreMaterialList = catchAsync(async (req, res) => {
   const materials = await Material.find({
     "store.storeId": req.params.storeId,
   }).exec();
+
+  const newMaterials = materials.map((material) => {
+    const usedMaterial = material.used ? "Used" : "Not used";
+    return { ...material._doc, usedMaterial };
+  });
+
   res.render("admin/stores/storeMaterials", {
     pageTitle: "List of materials",
     url: "/admin/stores",
-    materials,
+    materials: newMaterials,
     storeName: store.name,
     storeId: store._id,
     error: req.flash("danger")[0],

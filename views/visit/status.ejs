@@ -87,7 +87,7 @@
           <select class="form-select" aria-label="material" name="material" id="material">
             <option selected disabled hidden>Select</option>
             <% materials.forEach(material => { %>
-              <option value="<%= material.materialId %>"><%= material.materialName %></option>
+              <option value="<%= material._id %>"><%= material.name %></option>
             <% }) %>
           </select>
         </div>

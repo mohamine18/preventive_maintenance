@@ -7,6 +7,7 @@ const adminStoreController = require("../controllers/admin/store");
 const adminMaterialController = require("../controllers/admin/material");
 const adminVisitController = require("../controllers/admin/visit");
 const adminStatusController = require("../controllers/admin/status");
+const adminDashboardController = require("../controllers/admin/dashboard");
 
 const {
   isNotAdmin,
@@ -18,6 +19,9 @@ const storeValidator = require("../validators/store");
 const materialValidator = require("../validators/material");
 
 router.use(isNotAdmin);
+
+// Route for dashboard
+router.route("/").get(adminDashboardController.getDashboard);
 
 // Routes of manipulating Users or Accounts
 router

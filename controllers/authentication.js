@@ -50,6 +50,9 @@ exports.login = catchAsync(async (req, res) => {
   req.session.isLoggedIn = true;
   req.session.user = { _id, email, role, func };
   req.session.save();
+  if (role === "admin") {
+    return res.redirect("/admin");
+  }
   res.redirect("/");
 });
 

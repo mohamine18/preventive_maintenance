@@ -68,17 +68,17 @@ exports.getVisitStatusList = catchAsync(async (req, res) => {
   });
   //subtract materials already have a status active
   const visit = await Visit.findOne({ _id: req.params.visitId }).exec(); // check for no visit
-  const { materials } = await Store.findOne({
-    _id: visit.store.storeId,
-  }).select("materials");
+  const materials = await Material.find({
+    "store.storeId": visit.store.storeId,
+  }).select("_id name used");
   const checkedMaterials = [];
   statuses.forEach((status) =>
     checkedMaterials.push(status.material.materialId.toString())
   );
 
   const newMaterials = materials.filter((item) => {
-    const include = checkedMaterials.includes(item.materialId.toString());
-    if (!include) {
+    const include = checkedMaterials.includes(item._id.toString());
+    if (!include && item.used) {
       return item;
     }
     return;

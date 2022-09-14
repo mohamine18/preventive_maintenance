@@ -107,6 +107,7 @@ exports.editMaterial = catchAsync(async (req, res) => {
     name: req.body.name,
     inventoryCode: req.body.inventoryCode,
     acquisitionDate: req.body.acquisitionDate,
+    used: req.body.used,
     comment: req.body.comment ? req.body.comment : "",
   };
 

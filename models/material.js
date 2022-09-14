@@ -13,6 +13,7 @@ const materialSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    used: { type: Boolean, default: true },
     store: {
       storeId: {
         type: mongoose.Types.ObjectId,

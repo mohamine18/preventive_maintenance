@@ -25,6 +25,10 @@
                 <input type="date" class="form-control" name="acquisitionDate" id="acquisitionDate" placeholder="acquisitionDate" <% if (material !== null) { %> value="<%= material.acquisitionDate %>"<% } %> data-date="<%= material.acquisitionDate %> ">
                 <label for="acquisitionDate">Acquisition date</label>
             </div>
+            <select class="form-select mb-3" aria-label="used" name="used" id="used" data-value="<%= material.used %>">
+                <option value="true">Used</option>
+                <option value="false">Not used</option>
+            </select>
             <div class="form-floating mb-3">
                 <textarea class="form-control" name="comment" id="comment" placeholder="comment" <% if (material !== null) { %> data-value="<%= material.comment %>"<% } %> ></textarea>
                 <label for="inventoryCode">Comment</label>
