@@ -1,0 +1,27 @@
+<%- include('../../includes/head'); -%>
+    <link rel="stylesheet" href="">
+</head>
+<body class="container" style="padding-top: 70px;">
+    <%- include('../../includes/navigation'); -%>
+    <section class="d-flex flex-row flex-wrap p-2">
+        <% data.forEach(element => { %>
+            <div class="card m-1" style="width: 15%;min-width: 200px;">
+                <div class="card-body">
+                    <h5 class="card-title"><%= element.store %></h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <% element.materials.forEach(material => { %>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"><b><%= material.category %>: </b><span class="badge bg-primary rounded-pill"><%= material.count %></span></li>
+                    <% }) %>
+                </ul>
+                <div class="card-footer">
+                    <p><i>Materials State:</i></p>
+                    <div class="progress">
+                        <div class="progress-bar  progress-bar-striped bg-<%= element.cleanlinessFilter.progressColor %>" role="progressbar" aria-label="Example with label" style="width:<%= element.cleanlinessFilter.averageCleanliness %>%" aria-valuenow="<%= element.cleanlinessFilter.averageCleanliness %>" aria-valuemin="0" aria-valuemax="100"><%= element.cleanlinessFilter.averageCleanliness %>%</div>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </section>
+
+<%- include('../../includes/footer'); -%>
