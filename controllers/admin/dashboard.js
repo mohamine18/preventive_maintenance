@@ -1,12 +1,11 @@
 const Store = require("../../models/store");
 const Material = require("../../models/material");
-const Status = require("../../models/status");
 
 const catchAsync = require("../../util/catchAsync");
 const { percentage, progress } = require("../../util/dashboard");
 
 exports.getDashboard = catchAsync(async (req, res) => {
-  const stores = await Store.find().select("_id name");
+  const stores = await Store.find().select("_id name").sort("name");
   const storeMaterials = await Promise.all(
     stores.map(async (store) => {
       // material number of each material category per store
@@ -31,8 +30,70 @@ exports.getDashboard = catchAsync(async (req, res) => {
           $sort: { category: 1 },
         },
       ]);
+      // count materials where active:true, used:true, and has lastStatus
+      const countMaterialsAllCategories = await Material.aggregate([
+        [
+          {
+            $match: {
+              "store.storeId": store._id,
+              active: true,
+              used: true,
+              lastStatus: {
+                $exists: true,
+              },
+            },
+          },
+          {
+            $count: "totalMaterials",
+          },
+        ],
+      ]);
+      // count materials where in lastStatus: cleanliness is clean and physicalState is good
+      const countGoodStateMaterials = await Material.aggregate([
+        [
+          {
+            $match: {
+              "store.storeId": store._id,
+              active: true,
+              used: true,
+              lastStatus: {
+                $exists: true,
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "status",
+              localField: "lastStatus",
+              foreignField: "_id",
+              as: "status",
+            },
+          },
+          {
+            $replaceRoot: {
+              newRoot: {
+                $mergeObjects: [
+                  {
+                    $arrayElemAt: ["$status", 0],
+                  },
+                  "$$ROOT",
+                ],
+              },
+            },
+          },
+          {
+            $match: {
+              cleanliness: "clean",
+              physicalState: "good",
+            },
+          },
+          {
+            $count: "goodStateMaterials",
+          },
+        ],
+      ]);
       // Number of material of categories ['pc', 'laptop', 'server','all in one'] in each store
-      const NbrMaterials = await Material.aggregate([
+      const countMaterialsSelectedCategories = await Material.aggregate([
         {
           $match: {
             "store.storeId": store._id,
@@ -45,7 +106,7 @@ exports.getDashboard = catchAsync(async (req, res) => {
         },
         { $count: "nbrAllPc" },
       ]);
-      // number of good materials of categories ['pc', 'laptop', 'server','all in one'] in each store
+      // number of good materials of categories ['pc', 'laptop', 'server','all in one'] in each store based on lastStatus
       const material = await Material.aggregate([
         {
           $match: {
@@ -151,50 +212,29 @@ exports.getDashboard = catchAsync(async (req, res) => {
         },
       ]);
 
-      const selectedMaterials = await Material.find({
-        "store.storeId": store._id,
-        active: true,
-        used: true,
-      }).select("lastStatus");
+      const nbrMaterial =
+        countMaterialsAllCategories.length !== 0
+          ? Object.values(...countMaterialsAllCategories)[0]
+          : 0;
 
-      const selectedStatus = selectedMaterials
-        .map((elem) => elem.lastStatus)
-        .filter((elem) => elem !== undefined);
+      const goodMaterials =
+        countGoodStateMaterials.length !== 0
+          ? Object.values(...countGoodStateMaterials)[0]
+          : 0;
 
-      const selectedLastStatus = await Promise.all(
-        selectedStatus.map(async (status) => {
-          const lastStatus = await Status.findOne({
-            _id: status,
-            cleanliness: "clean",
-            physicalState: "good",
-          }).select("cleanliness physicalState");
-          return lastStatus;
-        })
-      );
+      const nbrGoodPc =
+        material.length !== 0 ? Object.values(...material)[0] : 0;
 
-      const filteredSelectedStatus = selectedLastStatus.filter(
-        (elem) => elem !== null
-      );
-      let nbrGoodPc = 0;
-      if (material.length === 0) {
-        nbrGoodPc = 0;
-      } else {
-        nbrGoodPc = Object.values(...material)[0];
-      }
-      const nbrAllPc = Object.values(...NbrMaterials)[0];
+      const nbrAllPc = Object.values(...countMaterialsSelectedCategories)[0];
+
       return {
         store: store.name,
         materials: materialCategory,
         cleanlinessFilter: {
-          nbrMaterial: selectedStatus.length,
-          goodMaterials: filteredSelectedStatus.length,
-          averageCleanliness: percentage(
-            filteredSelectedStatus.length,
-            selectedStatus.length
-          ),
-          progressColor: progress(
-            percentage(filteredSelectedStatus.length, selectedStatus.length)
-          ),
+          nbrMaterial: nbrMaterial,
+          goodMaterials: goodMaterials,
+          averageCleanliness: percentage(goodMaterials, nbrMaterial),
+          progressColor: progress(percentage(goodMaterials, nbrMaterial)),
         },
         pcStatus: {
           nbrGoodPc,
