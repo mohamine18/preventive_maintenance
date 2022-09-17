@@ -3,13 +3,14 @@ const Material = require("../../models/material");
 const Status = require("../../models/status");
 
 const catchAsync = require("../../util/catchAsync");
+const { percentage, progress } = require("../../util/dashboard");
 
 exports.getDashboard = catchAsync(async (req, res) => {
   const stores = await Store.find().select("_id name");
   const storeMaterials = await Promise.all(
     stores.map(async (store) => {
       // material number of each material category per store
-      const material = await Material.aggregate([
+      const materialCategory = await Material.aggregate([
         { $match: { "store.storeId": store._id, active: true, used: true } },
         {
           $group: {
@@ -30,6 +31,126 @@ exports.getDashboard = catchAsync(async (req, res) => {
           $sort: { category: 1 },
         },
       ]);
+      // Number of material of categories ['pc', 'laptop', 'server','all in one'] in each store
+      const NbrMaterials = await Material.aggregate([
+        {
+          $match: {
+            "store.storeId": store._id,
+            active: true,
+            used: true,
+            category: {
+              $in: ["PC", "Laptop", "Server", "All in one"],
+            },
+          },
+        },
+        { $count: "nbrAllPc" },
+      ]);
+      // number of good materials of categories ['pc', 'laptop', 'server','all in one'] in each store
+      const material = await Material.aggregate([
+        {
+          $match: {
+            "store.storeId": store._id,
+            active: true,
+            used: true,
+            category: {
+              $in: ["PC", "Laptop", "Server", "All in one"],
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "status",
+            localField: "lastStatus",
+            foreignField: "_id",
+            as: "state",
+          },
+        },
+        {
+          $replaceRoot: {
+            newRoot: {
+              $mergeObjects: [
+                {
+                  $arrayElemAt: ["$state", 0],
+                },
+                "$$ROOT",
+              ],
+            },
+          },
+        },
+        {
+          $match: {
+            $and: [
+              {
+                cleanliness: "clean",
+              },
+              {
+                physicalState: "good",
+              },
+              {
+                antivirusStatus: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                antivirusUpdate: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                antivirusLicense: "active",
+              },
+              {
+                diskStatus: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                chkdsk: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                fragmentation: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                sfc: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                networkState: "1Gb",
+              },
+              {
+                windowsLicense: "active",
+              },
+              {
+                officeLicense: "active",
+              },
+              {
+                WindowsRestorePoint: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                ProductionSoftware: {
+                  $in: ["fixed", "good"],
+                },
+              },
+              {
+                ShareAndBackup: {
+                  $in: ["fixed", "good"],
+                },
+              },
+            ],
+          },
+        },
+        {
+          $count: "nbrGoodPC",
+        },
+      ]);
+
       const selectedMaterials = await Material.find({
         "store.storeId": store._id,
         active: true,
@@ -54,86 +175,40 @@ exports.getDashboard = catchAsync(async (req, res) => {
       const filteredSelectedStatus = selectedLastStatus.filter(
         (elem) => elem !== null
       );
-      const averageCleanliness =
-        Math.ceil(
-          (filteredSelectedStatus.length / selectedStatus.length) * 100
-        ) || 0;
-
-      let progressColor = "";
-      if (averageCleanliness <= 100 && averageCleanliness > 70) {
-        progressColor = "success";
-      } else if (averageCleanliness <= 70 && averageCleanliness > 40) {
-        progressColor = "warning";
-      } else if (averageCleanliness <= 40 && averageCleanliness >= 0) {
-        progressColor = "danger";
+      let nbrGoodPc = 0;
+      if (material.length === 0) {
+        nbrGoodPc = 0;
+      } else {
+        nbrGoodPc = Object.values(...material)[0];
       }
-
+      const nbrAllPc = Object.values(...NbrMaterials)[0];
       return {
         store: store.name,
-        materials: material,
+        materials: materialCategory,
         cleanlinessFilter: {
           nbrMaterial: selectedStatus.length,
           goodMaterials: filteredSelectedStatus.length,
-          averageCleanliness,
-          progressColor,
+          averageCleanliness: percentage(
+            filteredSelectedStatus.length,
+            selectedStatus.length
+          ),
+          progressColor: progress(
+            percentage(filteredSelectedStatus.length, selectedStatus.length)
+          ),
+        },
+        pcStatus: {
+          nbrGoodPc,
+          nbrAllPc,
+          avgGoodPcStatus: percentage(nbrGoodPc, nbrAllPc),
+          progressColor: progress(percentage(nbrGoodPc, nbrAllPc)),
         },
       };
     })
   );
 
-  // TODO: count how many PC's with status fixed/good on each store for categories (laptop, pc , all in one , server)
-
-  const storeComputerStatus = await Promise.all(
-    stores.map(async (store) => {
-      const material = await Material.aggregate([
-        // {
-        //   $match: {
-        //     "store.storeId": store._id,
-        //     active: true,
-        //     used: true,
-        //     category: { $in: ["PC", "Laptop", "Server", "All in one"] },
-        //   },
-        // },
-        {
-          $lookup: {
-            from: "Status",
-            localField: "lastStatus",
-            foreignField: "_id",
-            pipeline: [
-              { $match: { cleanliness: "dirty", physicalState: "bad" } },
-            ],
-            as: "status",
-          },
-        },
-        // {
-        //   $group: {
-        //     _id: {
-        //       name: "$name",
-        //       lastStatus: "$lastStatus",
-        //     },
-        //   },
-        // },
-        // {
-        //   $project: {
-        //     _id: 0,
-        //     name: "$_id.name",
-        //     lastStatus: "$_id.lastStatus",
-        //   },
-        // },
-      ]);
-      // console.log(material);
-
-      return { storeName: store.name, material };
-    })
-  );
-
-  // console.log(storeComputerStatus);
-
-  // res.render("admin/dashboard/dashboard", {
-  //   pageTitle: "Dashboard",
-  //   url: "/admin",
-  //   data: storeMaterials,
-  // });
-
-  res.send(JSON.stringify(storeComputerStatus));
+  res.render("admin/dashboard/dashboard", {
+    pageTitle: "Dashboard",
+    url: "/admin",
+    data: storeMaterials,
+  });
 });
