@@ -225,7 +225,10 @@ exports.getDashboard = catchAsync(async (req, res) => {
       const nbrGoodPc =
         material.length !== 0 ? Object.values(...material)[0] : 0;
 
-      const nbrAllPc = Object.values(...countMaterialsSelectedCategories)[0];
+      const nbrAllPc =
+        countMaterialsSelectedCategories.length !== 0
+          ? Object.values(...countMaterialsSelectedCategories)[0]
+          : 0;
 
       return {
         store: store.name,
