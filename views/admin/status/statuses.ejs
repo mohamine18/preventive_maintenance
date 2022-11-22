@@ -91,14 +91,14 @@
 
 <!-- Modal filter visits -->
 <div class="modal fade" id="filterModel" tabindex="-1" aria-labelledby="filterModelLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="filterModelLabel">Filters</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="/admin/statuses" method="GET" id="filterForm">
-          <div class="modal-body">
+        <div class="modal-body">
+            <form action="/admin/statuses" method="GET" id="filterForm">
             <div class="input-group mb-3">
               <label class="input-group-text" for="store">Store</label>
                   <select class="form-select" id="store" name="store">
